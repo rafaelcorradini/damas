@@ -9,7 +9,6 @@ class Damas {
 	 * O tamanho não poderá ser alterado posteriormente. 
 	 */
 	public Damas() {
-		this.tamanho = tamanho;
 		tabuleiro = new int[tamanho][tamanho];	
 	}
 	
@@ -44,21 +43,51 @@ class Damas {
 	
 	/**
 	 * 
-	 * @param fromI
-	 * @param fromJ
-	 * @param toI
-	 * @param toJ
-	 * @return Retorna True caso a jogada seja feita, False caso não seja possível fazer a jogada.
+	 * @param fromI Linha onde a peça que será movida está.
+	 * @param fromJ Coluna onde a peça que será movida está.
+	 * @param toI Linha para onde a peça movida deve ir.
+	 * @param toJ Coluna para onde a peça movida deve ir.
+	 * @return Retorna um inteiro, -1 - se não for possível fazer a jogada, 0 - se fizer mas não fizer ponto, 1 - se fizer e fizer ponto. 
 	 */
-	public boolean fazerJogada(int fromI, int fromJ, int toI, int toJ, Jogador jogador) {
-		final int from = tabuleiro[fromI][fromJ], to = tabuleiro[toI][toJ]; 
+	public int fazerJogada(int fromI, int fromJ, int toI, int toJ, Jogador jogador) {
+		final int from = tabuleiro[fromI][fromJ], to = tabuleiro[toI][toJ];
+		boolean flag = false;
 		
-		if((from == 3 || from == 4) || (from == 1 && fromI < toI) || (from == 2 && fromI > toI)) { // aq
-			
-		} else {
-			return false;
+		if (from == 0) return -1;
+		if (jogador.getCor() != from && jogador.getCor() != (from+2)) return -1;
+		if (fromI == toI && fromJ == toJ) return -1;
+		if ((from == 1 && fromI < toI) || (from == 2 && fromI > toI)) { 
+			if (from == 1 && ((fromI-1 == toI && fromJ+1 == toJ) || (fromI-1 == toI && fromJ-1 == toJ)))
+				flag = true;
+			else if (from == 2 && ((fromI+1 == toI && fromJ+1 == toJ) || (fromI+1 == toI && fromJ-1 == toJ)))
+				flag = true;
 		}
-		
-		
+		if (flag && to == 0)
+			return 0;;
+		if (((from == 3 || from == 4) && ((fromI-toI/fromJ-toJ) == 1 || (fromI-toI/fromJ-toJ) == -1)) && to == 0) {
+			if ((fromI-toI/fromJ-toJ) == 1) 
+				if (fromI<toI) {
+					for (int i = fromI, j = fromJ; i != toI || j != toJ; i--, j++) {
+						if (tabuleiro[i][j] > 0) {
+							if (tabuleiro[i-1][j+1] > 0 || (i-1 != toI && j+1 != toJ)) return -1;
+							if (jogador.getCor() == 1) {
+								if (tabuleiro[i][j] == 2 || tabuleiro[i][j] == 4)
+									return 1;
+								else 
+									return -1;
+							} else {
+								if (tabuleiro[i][j] == 3 || tabuleiro[i][j] == 1)
+									return 1;
+								else
+									return -1;
+							}
+							
+						}
+					} 
+				}
+				
+		}
+
+		return -1;
 	}
 }

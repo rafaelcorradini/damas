@@ -11,6 +11,8 @@ public class Jogador {
 	 */
 	public Jogador(String nome, int cor) {
 		this.nome = nome;
+		if (cor != 1 && cor != 2) 
+			throw new IllegalArgumentException("Número da cor inválido");
 		this.cor = cor;
 	}
 	
