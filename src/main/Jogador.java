@@ -12,11 +12,35 @@ public class Jogador {
 	public Jogador(String nome, int cor) {
 		this.nome = nome;
 		if (cor != 1 && cor != 2) 
-			throw new IllegalArgumentException("Número da cor inválido");
+			throw new IllegalArgumentException("Número da cor inválido.");
 		this.cor = cor;
 	}
 	
+	/**
+	 * Atribui a cor das peças do jogador.
+	 */
+	public void setCor(int cor) {
+		this.cor = cor;
+	}
+	
+	/**
+	 * @return Retorna a cor das peças do jogador.
+	 */
 	public int getCor() {
 		return cor;
+	}
+	
+	/**
+	 * Atribui o nome do jogador.
+	 */
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	/**
+	 * @return Retorna o nome do jogador.
+	 */
+	public String getNome() {
+		return nome;
 	}
 }
