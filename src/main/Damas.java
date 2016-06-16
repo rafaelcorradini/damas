@@ -1,8 +1,8 @@
 package main;
-class Damas {
-	private int[][] tabuleiro = new int[8][8]; // -1 - não é casa, 0 - vazio, 1 - peça preta, 2 - peça branca, 3 - dama preta e 4 - dama branca
-	private int[][] tabuleiroTemp = new int[8][8];
-	private int pontosJogada = 0; // pontos acumulados na jogada atual.
+public class Damas {
+	private int[][] tabuleiro; // -1 - não é casa, 0 - vazio, 1 - peça preta, 2 - peça branca, 3 - dama preta e 4 - dama branca
+	private int[][] tabuleiroTemp;
+//	private int pontosJogada = 0; // pontos acumulados na jogada atual.
 	private int tamanho = 8;
 	private int melhorJogada = 0;
 	
@@ -14,6 +14,7 @@ class Damas {
 	public Damas() {
 		tabuleiro = new int[tamanho][tamanho];	
 		initTabuleiro(tamanho);
+		tabuleiroTemp = tabuleiro;
 	}
 	
 	/**
@@ -26,6 +27,7 @@ class Damas {
 		this.tamanho = tamanho;
 		tabuleiro = new int[tamanho][tamanho];	
 		initTabuleiro(tamanho);
+		tabuleiroTemp = tabuleiro;
 	}
 	
 	/**
@@ -76,13 +78,29 @@ class Damas {
 		boolean flag = false;
 		
 		if (from == 0) return -1;
-		if (jogador.getCor() != from && jogador.getCor() != (from+2)) return -1;
+		if (jogador.getCor() != from && jogador.getCor() != (from+2) && jogador.getCor() != (from-2)) return -1;
 		if (fromI >= tamanho || fromI < 0 || toI >= tamanho || toI < 0) return -1;
 		if (fromI == toI && fromJ == toJ) return -1;
+		if (to != 0)
+			return -1;
+		if (from == 1) {
+			if (fromI == tamanho-1) {
+				tabuleiroTemp[fromI][fromJ] = 0;
+				tabuleiroTemp[toI][toJ] = 3;
+				return 0;
+			}
+		}
+		if (from == 2) {
+			if (fromI == 0) {
+				tabuleiroTemp[fromI][fromJ] = 0;
+				tabuleiroTemp[toI][toJ] = 4;
+				return 0;
+			}
+		}
 		if ((from == 1 && fromI < toI) || (from == 2 && fromI > toI)) { 
-			if (from == 1 && ((fromI-1 == toI && fromJ+1 == toJ) || (fromI-1 == toI && fromJ-1 == toJ)))
+			if (from == 1 && ((fromI+1 == toI && fromJ+1 == toJ) || (fromI+1 == toI && fromJ-1 == toJ)))
 				flag = true;
-			else if (from == 2 && ((fromI+1 == toI && fromJ+1 == toJ) || (fromI+1 == toI && fromJ-1 == toJ)))
+			else if (from == 2 && ((fromI-1 == toI && fromJ+1 == toJ) || (fromI-1 == toI && fromJ-1 == toJ)))
 				flag = true;
 		}
 		if (flag && to == 0) {
@@ -289,5 +307,28 @@ class Damas {
 		tabuleiroTemp = tabuleiroT;
 	}
 	
+	@Override
+	public String toString() {
+		String str = "";
+		for(int i = 0; i < tamanho; i++) {
+			for(int j = 0; j < tamanho; j++) {
+				if (tabuleiro[i][j] >= 0)
+					str += " "+tabuleiro[i][j]+" | ";
+				else 
+					str += tabuleiro[i][j]+" | ";
+			}
+			str += "\n";
+			for(int j = 0; j < tamanho; j++) {
+				str += "-----";
+			}
+			str += "\n";
+		}
+		return str;
+		
+	}
 	
+	public static void main(String[] args) {
+		Damas d = new Damas();
+		System.out.println(d);
+	}
 }
