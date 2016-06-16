@@ -20,21 +20,6 @@ public class TesteDamas {
 	}
 
 	@Test
-	public void testInitTabuleiro() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetTamanho() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetTabuleiro() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testFazerMovimento() {
 		Damas d = new Damas();
 		Jogador j = new Jogador("rafael", 1);
@@ -57,11 +42,38 @@ public class TesteDamas {
 		d.confirmarJogada();
 		assertArrayEquals(t, d.getTabuleiro());
 		System.out.println(d);
+		j.setCor(2);
+		assertEquals(1, d.fazerMovimento(6, 3, 4, 1, j));
+		t[6][3] = 0;
+		t[4][1] = 2;
+		t[5][2] = 0;
+		d.confirmarJogada();
+		assertArrayEquals(t, d.getTabuleiro());
+		System.out.println(d);
+		
+		j.setCor(1);
+		assertEquals(0, d.fazerMovimento(2, 3, 3, 4, j));
+		assertEquals(0, d.fazerMovimento(1, 4, 2, 3, j));
+		assertEquals(0, d.fazerMovimento(2, 3, 3, 2, j));
+		assertEquals(0, d.fazerMovimento(0, 5, 1, 4, j));
+		d.confirmarJogada();
+		System.out.println(d);
+		
+		j.setCor(2);
+		assertEquals(2, d.melhorJogada(j));
+		assertEquals(1, d.fazerMovimento(4, 1, 2, 3, j));
+		assertEquals(1, d.fazerMovimento(2, 3, 0, 5, j));
+		d.confirmarJogada();
+		System.out.println(d);
+		assertEquals(0, d.fazerMovimento(0, 5, 2, 3, j));
+		d.confirmarJogada();
+		System.out.println(d);
+		assertEquals(1, d.melhorJogada(j));
+		assertEquals(1, d.fazerMovimento(2, 3, 4, 5, j));
+		d.confirmarJogada();
+		System.out.println(d);
+		
 	}
 
-	@Test
-	public void testMelhorJogada() {
-		fail("Not yet implemented");
-	}
 
 }
