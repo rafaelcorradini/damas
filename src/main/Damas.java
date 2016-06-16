@@ -77,6 +77,7 @@ class Damas {
 		
 		if (from == 0) return -1;
 		if (jogador.getCor() != from && jogador.getCor() != (from+2)) return -1;
+		if (fromI >= tamanho || fromI < 0 || toI >= tamanho || toI < 0) return -1;
 		if (fromI == toI && fromJ == toJ) return -1;
 		if ((from == 1 && fromI < toI) || (from == 2 && fromI > toI)) { 
 			if (from == 1 && ((fromI-1 == toI && fromJ+1 == toJ) || (fromI-1 == toI && fromJ-1 == toJ)))
@@ -111,7 +112,10 @@ class Damas {
 				if (fromI>toI) {
 					for (int i = fromI, j = fromJ; i != toI || j != toJ; i--, j++) {
 						if (tabuleiroTemp[i][j] > 0) {
-							if (tabuleiroTemp[i-1][j+1] > 0 || (i-1 != toI && j+1 != toJ)) return -1;
+							if (!(i-1 < 0 || i-1 >= tamanho || j+1 < 0 || j+1 >= tamanho))  {
+								if (tabuleiroTemp[i-1][j+1] > 0 || (i-1 != toI && j+1 != toJ)) return -1;
+							}
+							
 							if (jogador.getCor() == 1) {
 								if (tabuleiroTemp[i][j] == 2 || tabuleiroTemp[i][j] == 4) {
 									tabuleiroTemp[fromI][fromJ] = 0;
@@ -133,7 +137,9 @@ class Damas {
 				} else {
 					for (int i = fromI, j = fromJ; i != toI || j != toJ; i++, j--) {
 						if (tabuleiroTemp[i][j] > 0) {
-							if (tabuleiroTemp[i+1][j-1] > 0 || (i+1 != toI && j-1 != toJ)) return -1;
+							if (!(i+1 < 0 || i+1 >= tamanho || j-1 < 0 || j-1 >= tamanho))  {
+								if (tabuleiroTemp[i+1][j-1] > 0 || (i+1 != toI && j-1 != toJ)) return -1;
+							}
 							if (jogador.getCor() == 1) {
 								if (tabuleiroTemp[i][j] == 2 || tabuleiroTemp[i][j] == 4) {
 									tabuleiroTemp[fromI][fromJ] = 0;
@@ -157,7 +163,9 @@ class Damas {
 				if (fromI<toI) {
 					for (int i = fromI, j = fromJ; i != toI || j != toJ; i++, j++) {
 						if (tabuleiroTemp[i][j] > 0) {
-							if (tabuleiroTemp[i+1][j+1] > 0 || (i+1 != toI && j+1 != toJ)) return -1;
+							if (!(i+1 < 0 || i+1 >= tamanho || j+1 < 0 || j+1 >= tamanho))  {
+								if (tabuleiroTemp[i+1][j+1] > 0 || (i+1 != toI && j+1 != toJ)) return -1;
+							}
 							if (jogador.getCor() == 1) {
 								if (tabuleiroTemp[i][j] == 2 || tabuleiroTemp[i][j] == 4) {
 									tabuleiroTemp[fromI][fromJ] = 0;
@@ -179,7 +187,9 @@ class Damas {
 				} else {
 					for (int i = fromI, j = fromJ; i != toI || j != toJ; i--, j--) { 
 						if (tabuleiroTemp[i][j] > 0) {
-							if (tabuleiroTemp[i-1][j-1] > 0 || (i-1 != toI && j-1 != toJ)) return -1;
+							if (!(i-1 < 0 || i-1 >= tamanho || j-1 < 0 || j-1 >= tamanho))  {
+								if (tabuleiroTemp[i-1][j-1] > 0 || (i-1 != toI && j-1 != toJ)) return -1;
+							}
 							if (jogador.getCor() == 1) {
 								if (tabuleiroTemp[i][j] == 2 || tabuleiroTemp[i][j] == 4) {
 									tabuleiroTemp[fromI][fromJ] = 0;
