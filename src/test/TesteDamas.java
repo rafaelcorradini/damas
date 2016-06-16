@@ -44,9 +44,19 @@ public class TesteDamas {
 		t[2][1] = 0;
 		t[3][0] = 1;
 		d.confirmarJogada();
-		System.out.println(d);
-		
 		assertArrayEquals(t, d.getTabuleiro());
+		
+		j.setCor(2);
+		assertEquals(0, d.fazerMovimento(5, 2, 4, 1, j));
+		d.confirmarJogada();
+		System.out.println(d);
+		j.setCor(1);
+		assertEquals(1, d.fazerMovimento(3, 0, 5, 2, j));
+		t[3][0] = 0;
+		t[5][2] = 1;
+		d.confirmarJogada();
+		assertArrayEquals(t, d.getTabuleiro());
+		System.out.println(d);
 	}
 
 	@Test

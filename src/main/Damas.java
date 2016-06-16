@@ -110,7 +110,7 @@ public class Damas {
 		}
 		flag = false;
 		if (from == 1 || from == 2) {
-			if (((fromI-2 == toI && fromJ+2 == toJ) || (fromI-2 == toI && fromJ-2 == toJ)) || ((fromI+1 == toI && fromJ+1 == toJ) || (fromI+1 == toI && fromJ-1 == toJ))) {
+			if (((fromI-2 == toI && fromJ+2 == toJ) || (fromI-2 == toI && fromJ-2 == toJ)) || ((fromI+2 == toI && fromJ+2 == toJ) || (fromI+2 == toI && fromJ-2 == toJ))) {
 				if (from == 1)
 					if (tabuleiroTemp[(fromI+toI)/2][(fromJ+toJ)/2] == 2 || tabuleiroTemp[(fromI+toI)/2][(fromJ+toJ)/2] == 4)
 						flag = true;
