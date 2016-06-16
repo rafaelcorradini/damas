@@ -205,16 +205,25 @@ class Damas {
 		return -1;
 	}
 	
+	/**
+	 * Confirma a jogada feita, salvando-a.
+	 */
 	public void confirmarJogada() {
 		tabuleiro = tabuleiroTemp;
 	}
 	
+	/**
+	 * Verifica qual a pontuação da melhor jogada que pode ser feita nas configurações atuais.
+	 * Passa por todas as peças, e olha qual a melhor jogada a se fazer com a peça, utilizando o método auxiliar melhorJogadaAux().
+	 * @param jogador Jogador que está efetuando a jogada.
+	 * @return Pontuação da melhor jogada.
+	 */
 	public int melhorJogada(Jogador jogador) {
 		int[][] tabuleiroT = tabuleiroTemp;
 		
 		for (int i = 0; i < tamanho; i++) {
 			for (int j = 0; j < tamanho; j++) {
-				if(tabuleiro[i][j] > 0)
+				if(tabuleiro[i][j] > 0 && (jogador.getCor() == tabuleiro[i][j] || jogador.getCor()+2 == tabuleiro[i][j]))
 					melhorJogadaAux(i, j, jogador, -1);
 			}
 		}
@@ -223,6 +232,13 @@ class Damas {
 		return melhorJogada;
 	}
 	
+	/**
+	 * Método usado em melhor jogada. Verifica qual a melhor jogada a se fazer com a peça que está em ixj.
+	 * @param i Linha onde está a peça.
+	 * @param j Coluna onde está a peça
+	 * @param jogador Jogador que está fazendo a jogada
+	 * @param cont
+	 */
 	private void melhorJogadaAux(int i, int j, Jogador jogador, int cont) {
 		int[][] tabuleiroT = tabuleiroTemp;
 		
@@ -261,8 +277,6 @@ class Damas {
 		}
 		
 		tabuleiroTemp = tabuleiroT;
-		
-
 	}
 	
 	
