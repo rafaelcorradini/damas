@@ -3,7 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Classe que representa um servidor de uma conexão socket que manipula o jogo bozó
+ * Classe que representa um servidor de uma conexão socket que manipula o jogo de damas
  * @author root
  *
  */
@@ -12,8 +12,9 @@ public class Servidor {
 		ServerSocket servidor = new ServerSocket(9669);
 		System.out.println("Porta 9669 aberta!");
 		while(true) {
-			Socket cliente = servidor.accept();
-			Thread st = new ServerThread(cliente);
+			Socket jogador1 = servidor.accept();
+			Socket jogador2 = servidor.accept();
+			Thread st = new ServerThread(jogador1, jogador2);
 			st.start();
 		}
 	}

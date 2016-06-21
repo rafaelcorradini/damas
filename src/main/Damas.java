@@ -2,9 +2,13 @@ package main;
 public class Damas {
 	private int[][] tabuleiro; // -1 - não é casa, 0 - vazio, 1 - peça preta, 2 - peça branca, 3 - dama preta e 4 - dama branca
 	private int[][] tabuleiroTemp;
-//	private int pontosJogada = 0; // pontos acumulados na jogada atual.
 	private int tamanho = 8;
-	private int melhorJogada = 0;
+	private int melhorJogada1 = 0; // melhor jogada que pode ser feita na rodada pelo jogador 1, atribuida pelo método melhorJogada
+	private int melhorJogada2 = 0; // melhor jogada que pode ser feita na rodada pelo jogador 2, atribuida pelo método melhorJogada
+	private Jogador jogador1 = null;
+	private Jogador jogador2 = null;
+	private int vez = 1;
+	private int pontosRodada = 0; // pontos que o jogador fez na rodada até o momento.
 	
 	/**
 	 * Método construtor, atribui 8 para o tamanho do tabuleiro.
@@ -15,19 +19,52 @@ public class Damas {
 		tabuleiro = new int[tamanho][tamanho];	
 		initTabuleiro(tamanho);
 		tabuleiroTemp = tabuleiro.clone();
+		jogador1 = new Jogador("j1", 1);
+		jogador2 = new Jogador("j2", 2);
+		jogador1.setPecas(12);
+		jogador2.setPecas(12);
 	}
 	
 	/**
 	 * Método construtor, atribui o tamanho do tabuleiro que deverá ser passado por parâmetro.
 	 * Ex: 8 para um tabuleiro 8x8, 64 casas.
-	 * O tamanho não poderá ser alterado posteriormente. 
+	 * O tamanho não poderá ser alterado posteriormente e só são aceitos tamanhos pares maiores ou iguais a 6. 
 	 * @param tamanho Tamanho do tabuleiro.
 	 */
 	public Damas(int tamanho) {
+		if (tamanho % 2 != 0 || tamanho < 6) 
+			throw new IllegalArgumentException("Tamanho do tabuleiro inválido.");
 		this.tamanho = tamanho;
 		tabuleiro = new int[tamanho][tamanho];	
 		initTabuleiro(tamanho);
 		tabuleiroTemp = cloneTabuleiro(tabuleiro);
+		jogador1 = new Jogador("j1", 1);
+		jogador2 = new Jogador("j2", 2);
+		jogador1.setPecas((tamanho-2) * tamanho / 4);
+		jogador2.setPecas((tamanho-2) * tamanho / 4);
+	}
+	
+	/**
+	 * Método construtor, atribui o tamanho do tabuleiro que deverá ser passado por parâmetro.
+	 * Ex: 8 para um tabuleiro 8x8, 64 casas.
+	 * O tamanho não poderá ser alterado posteriormente e só são aceitos tamanhos pares maiores ou iguais a 6. 
+	 * @param tamanho Tamanho do tabuleiro.
+	 * @param jogador1 Referência a um objeto que representa o jogador1, que terá cor peta.
+	 * @param Jogador2 Referência a um objeto que representa o jogador2, que terá cor branca.
+	 */
+	public Damas(int tamanho, Jogador jogador1, Jogador jogador2) {
+		if (tamanho % 2 != 0 || tamanho < 6) 
+			throw new IllegalArgumentException("Tamanho do tabuleiro inválido.");
+		this.tamanho = tamanho;
+		tabuleiro = new int[tamanho][tamanho];	
+		initTabuleiro(tamanho);
+		tabuleiroTemp = cloneTabuleiro(tabuleiro);
+		this.jogador1 = jogador1;
+		this.jogador1.setCor(1);
+		this.jogador2 = jogador2;
+		this.jogador1.setCor(2);
+		jogador1.setPecas((tamanho-2) * tamanho / 4);
+		jogador2.setPecas((tamanho-2) * tamanho / 4);
 	}
 	
 	/**
@@ -78,22 +115,35 @@ public class Damas {
 	}
 	
 	/**
+	 * Retorna a cor do jogador que tem sua vez de jogar.
+	 * @return inteiro que representa a cor do jogador.
+	 */
+	public int getVez() {
+		return vez;
+	}
+	
+	/**
 	 * 
 	 * @param fromI Linha onde a peça que será movida está.
 	 * @param fromJ Coluna onde a peça que será movida está.
 	 * @param toI Linha para onde a peça movida deve ir.
 	 * @param toJ Coluna para onde a peça movida deve ir.
 	 * @return Retorna um inteiro, -1 - se não for possível fazer o movimento, 0 - se fizer mas não fizer ponto, 1 - se fizer e fizer ponto. 
+	 * @throws Exception 
 	 */
-	public int fazerMovimento(int fromI, int fromJ, int toI, int toJ, Jogador jogador) {
+	public int fazerMovimento(int fromI, int fromJ, int toI, int toJ, Jogador jogador) throws Exception {
 		final int from = tabuleiroTemp[fromI][fromJ], to = tabuleiroTemp[toI][toJ];
 		boolean flag = false;
+		
+		if (jogador.getCor() != getVez()) 
+			throw new Exception("O jogador não pode fazer um movimento nem verificar a melhor jogada, pois não é sua vez.");
 		
 		if (from == 0) return -1;
 		if (jogador.getCor() != from && jogador.getCor()+2 != from) return -1;
 		if (!isInArray(fromI, fromJ, tabuleiroTemp) || !isInArray(toI, toJ, tabuleiroTemp)) return -1;
 		if (fromI == toI && fromJ == toJ) return -1;
 		if (to != 0) return -1;
+		
 		if ((from == 1 && fromI < toI) || (from == 2 && fromI > toI)) { 
 			if (from == 1 && ((fromI+1 == toI && fromJ+1 == toJ) || (fromI+1 == toI && fromJ-1 == toJ)))
 				flag = true;
@@ -132,6 +182,7 @@ public class Damas {
 			if (toI == 0 && from == 2) {
 				tabuleiroTemp[toI][toJ] = 4;
 			}
+			pontosRodada++;
 			return 1;
 		}
 		if ((from == 3 || from == 4) && ((fromI-toI)/(fromJ-toJ) == 1 || (fromI-toI)/(fromJ-toJ) == -1)) {
@@ -148,6 +199,7 @@ public class Damas {
 									tabuleiroTemp[fromI][fromJ] = 0;
 									tabuleiroTemp[i][j] = 0;
 									tabuleiroTemp[toI][toJ] = from;
+									pontosRodada++;
 									return 1;
 								} else 
 									return -1;
@@ -156,6 +208,7 @@ public class Damas {
 									tabuleiroTemp[fromI][fromJ] = 0;
 									tabuleiroTemp[i][j] = 0;
 									tabuleiroTemp[toI][toJ] = from;
+									pontosRodada++;
 									return 1;
 								} else
 									return -1;
@@ -174,6 +227,7 @@ public class Damas {
 									tabuleiroTemp[fromI][fromJ] = 0;
 									tabuleiroTemp[i][j] = 0;
 									tabuleiroTemp[toI][toJ] = from;
+									pontosRodada++;
 									return 1;
 								} else 
 									return -1;
@@ -182,6 +236,7 @@ public class Damas {
 									tabuleiroTemp[fromI][fromJ] = 0;
 									tabuleiroTemp[i][j] = 0;
 									tabuleiroTemp[toI][toJ] = from;
+									pontosRodada++;
 									return 1;
 								} else
 									return -1;
@@ -202,6 +257,7 @@ public class Damas {
 									tabuleiroTemp[fromI][fromJ] = 0;
 									tabuleiroTemp[i][j] = 0;
 									tabuleiroTemp[toI][toJ] = from;
+									pontosRodada++;
 									return 1;
 								} else 
 									return -1;
@@ -210,6 +266,7 @@ public class Damas {
 									tabuleiroTemp[fromI][fromJ] = 0;
 									tabuleiroTemp[i][j] = 0;
 									tabuleiroTemp[toI][toJ] = from;
+									pontosRodada++;
 									return 1;
 								} else
 									return -1;
@@ -228,6 +285,7 @@ public class Damas {
 									tabuleiroTemp[fromI][fromJ] = 0;
 									tabuleiroTemp[i][j] = 0;
 									tabuleiroTemp[toI][toJ] = from;
+									pontosRodada++;
 									return 1;
 								} else 
 									return -1;
@@ -236,6 +294,7 @@ public class Damas {
 									tabuleiroTemp[fromI][fromJ] = 0;
 									tabuleiroTemp[i][j] = 0;
 									tabuleiroTemp[toI][toJ] = from;
+									pontosRodada++;
 									return 1;
 								} else
 									return -1;
@@ -256,10 +315,32 @@ public class Damas {
 	
 	/**
 	 * Confirma a jogada feita, salvando-a.
+	 * @return Retorna true se o jogador tiver feito pontos suficientes, caso contraŕio retorna false.
 	 */
-	public void confirmarJogada() {
+	public boolean confirmarJogada() {
 		tabuleiro = cloneTabuleiro(tabuleiroTemp);
-		melhorJogada = 0;
+		if (getVez() == 1) {
+			if (melhorJogada1 > pontosRodada)
+				return false;
+			jogador2.removePecas(melhorJogada1);
+			melhorJogada1 = 0;
+			vez = 2;
+		} else {
+			if (melhorJogada2 > pontosRodada)
+				return false;
+			jogador1.removePecas(melhorJogada2);
+			melhorJogada2 = 0;
+			vez = 1;
+		}
+		return true;
+		
+	}
+	
+	/**
+	 * Anula os movimentos já feitos pelo jogador
+	 */
+	public void refazerJogada() {
+		tabuleiroTemp = cloneTabuleiro(tabuleiro); 
 	}
 	
 	/**
@@ -267,9 +348,11 @@ public class Damas {
 	 * Passa por todas as peças, e olha qual a melhor jogada a se fazer com a peça, utilizando o método auxiliar melhorJogadaAux().
 	 * @param jogador Jogador que está efetuando a jogada.
 	 * @return Pontuação da melhor jogada.
+	 * @throws Exception 
 	 */
-	public int melhorJogada(Jogador jogador) {
+	public int melhorJogada(Jogador jogador) throws Exception {
 		int[][] tabuleiroT = cloneTabuleiro(tabuleiroTemp);
+		int pontos = pontosRodada;
 		
 		for (int i = 0; i < tamanho; i++) {
 			for (int j = 0; j < tamanho; j++) {
@@ -279,7 +362,12 @@ public class Damas {
 		}
 		
 		tabuleiroTemp = cloneTabuleiro(tabuleiroT);
-		return melhorJogada;
+		pontosRodada = pontos;
+		
+		if (jogador.getCor() == 1)
+			return melhorJogada1;
+		else
+			return melhorJogada2;
 	}
 	
 	/**
@@ -301,11 +389,13 @@ public class Damas {
 	 * @param j Coluna onde está a peça
 	 * @param jogador Jogador que está fazendo a jogada
 	 * @param cont
+	 * @throws Exception 
 	 */
-	private void melhorJogadaAux(int i, int j, Jogador jogador, int cont) {
+	private void melhorJogadaAux(int i, int j, Jogador jogador, int cont) throws Exception {
 		int[][] tabuleiroT = cloneTabuleiro(tabuleiroTemp);
 		
-		if(melhorJogada < cont+1) melhorJogada = cont+1;
+		if (jogador.getCor() == 1)
+			if (melhorJogada1 < cont+1) melhorJogada1 = cont+1;
 		
 		if (tabuleiroTemp[i][j] < 3) {
 			if (isInArray(i-2, j+2, tabuleiroTemp))

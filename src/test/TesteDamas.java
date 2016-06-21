@@ -20,7 +20,7 @@ public class TesteDamas {
 	}
 
 	@Test
-	public void testFazerMovimento() {
+	public void testFazerMovimento() throws Exception {
 		Damas d = new Damas();
 		Jogador j = new Jogador("rafael", 1);
 		int[][] t = d.getTabuleiro();
