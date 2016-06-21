@@ -42,18 +42,18 @@ public class Celula extends JToggleButton {
 		switch (x) {
 		
 		case (0):
-			this.setIcon(new ImageIcon("C:\\Users\\Guilherme\\Documents\\Imagens Damas\\vazio.png"));
-			this.setSelectedIcon(new ImageIcon("C:\\Users\\Guilherme\\Documents\\Imagens Damas\\vazio_selected.png"));
+			this.setIcon(new ImageIcon(this.getClass().getResource("/vazio.png")));
+			this.setSelectedIcon(new ImageIcon(this.getClass().getResource("/vazio_selected.png")));
 			break;
 		
 		case (1):
-			this.setIcon(new ImageIcon("C:\\Users\\Guilherme\\Documents\\Imagens Damas\\peca_preta.png"));
-			this.setSelectedIcon(new ImageIcon("C:\\Users\\Guilherme\\Documents\\Imagens Damas\\peca_preta_selected.png"));
+			this.setIcon(new ImageIcon(this.getClass().getResource("/peca_preta.png")));
+			this.setSelectedIcon(new ImageIcon(this.getClass().getResource("/peca_preta_selected.png")));
 			break;
 			
 		case (2):
-			this.setIcon(new ImageIcon("C:\\Users\\Guilherme\\Documents\\Imagens Damas\\peca_branca.png"));
-			this.setSelectedIcon(new ImageIcon("C:\\Users\\Guilherme\\Documents\\Imagens Damas\\peca_branca_selected.png"));
+			this.setIcon(new ImageIcon(this.getClass().getResource("/peca_branca.png")));
+			this.setSelectedIcon(new ImageIcon(this.getClass().getResource("/peca_branca_selected.png")));
 			break;
 			
 		
