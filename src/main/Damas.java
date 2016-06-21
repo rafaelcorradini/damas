@@ -159,6 +159,9 @@ public class Damas {
 				flag = true;
 		}
 		if (flag) {
+			if (pontosRodada > 0) {
+				return -1;
+			}
 			tabuleiroTemp[fromI][fromJ] = 0;
 			tabuleiroTemp[toI][toJ] = from;
 			if (toI == tamanho-1 && from == 1) {
@@ -311,6 +314,9 @@ public class Damas {
 						}
 					} 
 				}
+			}
+			if (pontosRodada > 0) {
+				return -1;
 			}
 			tabuleiroTemp[fromI][fromJ] = 0;
 			tabuleiroTemp[toI][toJ] = from;
