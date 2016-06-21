@@ -136,13 +136,19 @@ public class Board extends JFrame implements ActionListener, ChangeListener {
 					check = jogo.fazerMovimento(iniX, iniY, endX, endY, jogo.getJogador());
 					
 					switch (check) {
-					case (1): atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
-					case (0)
-					
+						case (-1): jogo.refazerJogada();
+									atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
+									break;
+									
+						case (1): atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
+									break;
+						case (0): jogo.confirmarJogada();
+								  atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+									break;
+						//default: atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
 					}
+					//atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
 					
-					jogo.confirmarJogada();
-					atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
 				} catch (Exception e1) {e1.printStackTrace();}
 				
 				
