@@ -3,8 +3,8 @@ public class Damas {
 	private int[][] tabuleiro; // -1 - não é casa, 0 - vazio, 1 - peça preta, 2 - peça branca, 3 - dama preta e 4 - dama branca
 	private int[][] tabuleiroTemp;
 	private int tamanho = 8;
-	private int melhorJogada1 = 0; // melhor jogada que pode ser feita na rodada pelo jogador 1, atribuida pelo método melhorJogada
-	private int melhorJogada2 = 0; // melhor jogada que pode ser feita na rodada pelo jogador 2, atribuida pelo método melhorJogada
+	private int melhorJogada = 0; // melhor jogada que pode ser feita na rodada pelo jogador 1, atribuida pelo método melhorJogada
+ // melhor jogada que pode ser feita na rodada pelo jogador 2, atribuida pelo método melhorJogada
 	private Jogador jogador1 = null;
 	private Jogador jogador2 = null;
 	private int vez = 1;
@@ -337,21 +337,19 @@ public class Damas {
 	 */
 	public boolean confirmarJogada() {
 		tabuleiro = cloneTabuleiro(tabuleiroTemp);
+		
+		if (melhorJogada > pontosRodada)
+			return false;
+		
 		if (getVez() == 1) {
-			if (melhorJogada1 > pontosRodada)
-				return false;
-			jogador2.removePecas(melhorJogada1);
-			melhorJogada1 = 0;
+			jogador2.removePecas(melhorJogada);
 			vez = 2;
-			pontosRodada = 0;
 		} else {
-			if (melhorJogada2 > pontosRodada)
-				return false;
-			jogador1.removePecas(melhorJogada2);
-			melhorJogada2 = 0;
+			jogador1.removePecas(melhorJogada);
 			vez = 1;
-			pontosRodada = 0;
 		}
+		pontosRodada = 0;
+		
 		return true;
 		
 	}
@@ -365,7 +363,7 @@ public class Damas {
 	}
 	
 	/**
-	 * Verifica qual a pontuação da melhor jogada que pode ser feita nas configurações atuais.
+	 * Verifica qual a pontuação da melhor jogada que pode ser feita nas configurações atuais, em relação ao tabuleiro temporário.
 	 * Passa por todas as peças, e olha qual a melhor jogada a se fazer com a peça, utilizando o método auxiliar melhorJogadaAux().
 	 * @param jogador Jogador que está efetuando a jogada.
 	 * @return Pontuação da melhor jogada.
@@ -374,6 +372,7 @@ public class Damas {
 	public int melhorJogada(Jogador jogador) throws Exception {
 		int[][] tabuleiroT = cloneTabuleiro(tabuleiroTemp);
 		int pontos = pontosRodada;
+		melhorJogada = 0;
 		
 		for (int i = 0; i < tamanho; i++) {
 			for (int j = 0; j < tamanho; j++) {
@@ -385,12 +384,9 @@ public class Damas {
 		tabuleiroTemp = cloneTabuleiro(tabuleiroT);
 		pontosRodada = pontos;
 		
-		System.out.println(melhorJogada2);
-		System.out.println(melhorJogada1);
-		if (jogador.getCor() == 1)
-			return melhorJogada1;
-		else
-			return melhorJogada2;
+		System.out.println(melhorJogada);
+		return melhorJogada;
+
 	}
 	
 	/**
@@ -417,10 +413,7 @@ public class Damas {
 	private void melhorJogadaAux(int i, int j, Jogador jogador, int cont) throws Exception {
 		int[][] tabuleiroT = cloneTabuleiro(tabuleiroTemp);
 		
-		if (jogador.getCor() == 1)
-			if (melhorJogada1 < cont+1) melhorJogada1 = cont+1;
-		else
-			if (melhorJogada2 < cont+1) melhorJogada2 = cont+1;
+		if (melhorJogada < cont+1) melhorJogada = cont+1;
 		
 		if (tabuleiroTemp[i][j] < 3) {
 			if (isInArray(i-2, j+2, tabuleiroTemp))
