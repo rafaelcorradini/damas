@@ -130,6 +130,10 @@ public class Damas {
 		return vez == 1 ? jogador1 : jogador2;
 	}
 	
+	public int getPontosRodada() {
+		return pontosRodada;
+	}
+	
 	/**
 	 * 
 	 * @param fromI Linha onde a peça que será movida está.
