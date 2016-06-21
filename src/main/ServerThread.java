@@ -50,9 +50,9 @@ public class ServerThread extends Thread {
 		
 		try {
 			j1Out.println("Conectado com sucesso!");
-			j1Out.println("C 1");
+			j1Out.println("J 1");
 			j2Out.println("Conectado com sucesso!");
-			j2Out.println("C 2");
+			j2Out.println("J 2");
 			
 			line = j1In.nextLine();
 			if(!getComando(line).equals("I")) 
