@@ -55,6 +55,16 @@ public class Celula extends JToggleButton {
 			this.setIcon(new ImageIcon(this.getClass().getResource("/peca_branca.png")));
 			this.setSelectedIcon(new ImageIcon(this.getClass().getResource("/peca_branca_selected.png")));
 			break;
+		
+		case (3):
+			this.setIcon(new ImageIcon(this.getClass().getResource("/dama_preta.png")));
+			this.setSelectedIcon(new ImageIcon(this.getClass().getResource("/dama_preta_selected.png")));
+			break;
+		
+		case (4):
+			this.setIcon(new ImageIcon(this.getClass().getResource("/dama_branca.png")));
+			this.setSelectedIcon(new ImageIcon(this.getClass().getResource("/dama_branca_selected.png")));
+			break;
 			
 		
 		}
