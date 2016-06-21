@@ -13,6 +13,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -22,6 +23,7 @@ public class Board extends JFrame implements ActionListener {
 
 	static private final String SELECTED = new String ("selected");
 	
+	private static JLabel labelTop;
 	private boolean turno;
 	private int pontos = 0;
 	static Damas jogo;
@@ -57,26 +59,36 @@ public class Board extends JFrame implements ActionListener {
 	 */
 	public Board(int[][] tabu) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 420, 441);
+		setBounds(100, 100, 427, 463);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		labelTop = new JLabel("JOGADOR 1");
+		labelTop.setHorizontalAlignment(SwingConstants.CENTER);
+		contentPane.add(labelTop, BorderLayout.NORTH);
+		
+		JPanel panel = new JPanel();
+		contentPane.add(panel, BorderLayout.CENTER);
+		panel.setLayout(null);
+		
+		
 		
 		int i, j;
 		for (i = 0; i < 8; i++) {
 			for (j = 0; j < 8; j++) {
 				tabuleiro[i][j] = new Celula (i, j, tabu[i][j]);
-				contentPane.add(tabuleiro[i][j]);
+				panel.add(tabuleiro[i][j]);
 				tabuleiro[i][j].addActionListener(this);
 			}
 			
 		}
 	
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon("C:\\Users\\Guilherme\\Documents\\Imagens Damas\\Tabuleiro.png"));
+		label.setIcon(new ImageIcon(this.getClass().getResource("/Tabuleiro.png")));
 		label.setBounds(0, 0, 400, 400);
-		contentPane.add(label);
+		panel.add(label);
 		
 	}
 
@@ -186,6 +198,7 @@ public class Board extends JFrame implements ActionListener {
 			}
 		}
 		
+		labelTop.setText("JOGADOR " + jogo.getVez());
 		unablePecas (jogador.getCor());
 	}
 	
