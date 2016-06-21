@@ -62,7 +62,7 @@ public class Damas {
 		this.jogador1 = jogador1;
 		this.jogador1.setCor(1);
 		this.jogador2 = jogador2;
-		this.jogador1.setCor(2);
+		this.jogador2.setCor(2);
 		jogador1.setPecas((tamanho-2) * tamanho / 4);
 		jogador2.setPecas((tamanho-2) * tamanho / 4);
 	}
@@ -120,6 +120,10 @@ public class Damas {
 	 */
 	public int getVez() {
 		return vez;
+	}
+	
+	public Jogador getJogador() {
+		return vez == 1 ? jogador1 : jogador2;
 	}
 	
 	/**
