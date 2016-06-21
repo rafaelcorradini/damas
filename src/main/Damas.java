@@ -4,7 +4,6 @@ public class Damas {
 	private int[][] tabuleiroTemp;
 	private int tamanho = 8;
 	private int melhorJogada = 0; // melhor jogada que pode ser feita na rodada pelo jogador 1, atribuida pelo método melhorJogada
- // melhor jogada que pode ser feita na rodada pelo jogador 2, atribuida pelo método melhorJogada
 	private Jogador jogador1 = null;
 	private Jogador jogador2 = null;
 	private int vez = 1;
@@ -86,6 +85,8 @@ public class Damas {
 	
 	/**
 	 * Usado para clonar o tabuleiro.
+	 * @param oldTabuleiro Tabuleiro que será clonado
+	 * @return clone do tabuleiro
 	 */
 	private int[][] cloneTabuleiro(int[][] oldTabuleiro) {
 		int[][] newTabuleiro = new int[tamanho][tamanho];
@@ -114,6 +115,11 @@ public class Damas {
 		return cloneTabuleiro(this.tabuleiro);
 	}
 	
+	/**
+	 * Retorna uma matriz que representa o tabuleiro temporário, ou seja, com mudanças efetuadas na rodada.
+	 * 0 representa uma casa vazia, 1 uma peça branca, 2 uma peça preta, 3 uma dama branca e 4 uma dama preta.
+	 * @return Retorna uma matriz de duas dimensões de inteiros.
+	 */
 	public int[][] getTabuleiroTemp() {
 		return cloneTabuleiro(this.tabuleiroTemp);
 	}
@@ -126,6 +132,10 @@ public class Damas {
 		return vez;
 	}
 	
+	/**
+	 * Retorna o jogador que tem sua vez de jogar.
+	 * @return Objeto Jogador.
+	 */
 	public Jogador getJogador() {
 		return vez == 1 ? jogador1 : jogador2;
 	}
@@ -474,6 +484,27 @@ public class Damas {
 		
 	}
 	
+	/**
+	 * Retorna uma string que representa o tabuleiro, na forma:
+	 *  ----------------------------------------
+	 *  -1 |  1 | -1 |  1 | -1 |  1 | -1 |  1 | 
+	 * ----------------------------------------
+	 *	 1 | -1 |  1 | -1 |  1 | -1 |  1 | -1 | 
+	 *	----------------------------------------
+	 *	-1 |  1 | -1 |  1 | -1 |  1 | -1 |  1 | 
+	 *	----------------------------------------
+	 *	 0 | -1 |  0 | -1 |  0 | -1 |  0 | -1 | 
+	 *	----------------------------------------
+	 *	-1 |  0 | -1 |  0 | -1 |  0 | -1 |  0 | 
+	 *	----------------------------------------
+	 *	 2 | -1 |  2 | -1 |  2 | -1 |  2 | -1 | 
+	 *	----------------------------------------
+	 *	-1 |  2 | -1 |  2 | -1 |  2 | -1 |  2 | 
+	 *	----------------------------------------
+	 *	 2 | -1 |  2 | -1 |  2 | -1 |  2 | -1 | 
+	 *	----------------------------------------
+	 * @return String
+	 */
 	@Override
 	public String toString() {
 		String str = "";
