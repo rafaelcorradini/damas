@@ -145,9 +145,7 @@ public class Board extends JFrame implements ActionListener, ChangeListener {
 						case (0): jogo.confirmarJogada();
 								  atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
 									break;
-						//default: atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
 					}
-					//atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
 					
 				} catch (Exception e1) {e1.printStackTrace();}
 				
