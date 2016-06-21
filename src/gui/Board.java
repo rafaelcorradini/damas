@@ -134,17 +134,20 @@ public class Board extends JFrame implements ActionListener {
 					
 					System.out.println("De: " + iniX + "x" + iniY + "Para: " + endX + "x" + endY);
 					check = jogo.fazerMovimento(iniX, iniY, endX, endY, jogo.getJogador());
+					System.out.println("check:"+check);
 					
 					switch (check) {
 									
 						case (-1):  turno = false;
 									break;	
 									
-						case (0): 	turno = true;
+						case (0): 	if(melhor > 0)
+										turno = false;
+									else
+										turno = true;	
 									break;
 									
-						case (1): 	atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
-									pontos++;
+						case (1): 	pontos++;
 									turno = true;
 									break;
 					}
@@ -158,12 +161,12 @@ public class Board extends JFrame implements ActionListener {
 						pontos = 0;
 						turno = false;
 					}  else if(turno) {
-						atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+						atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
 						System.out.println(jogo);
 						turno = false;
 					} else {
 						jogo.refazerJogada();
-						atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
+						atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
 						System.out.println("Jogada n�o valida");
 						pontos = 0;
 					}

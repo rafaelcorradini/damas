@@ -385,6 +385,8 @@ public class Damas {
 		tabuleiroTemp = cloneTabuleiro(tabuleiroT);
 		pontosRodada = pontos;
 		
+		System.out.println(melhorJogada2);
+		System.out.println(melhorJogada1);
 		if (jogador.getCor() == 1)
 			return melhorJogada1;
 		else
