@@ -114,6 +114,10 @@ public class Damas {
 		return cloneTabuleiro(this.tabuleiro);
 	}
 	
+	public int[][] getTabuleiroTemp() {
+		return cloneTabuleiro(this.tabuleiroTemp);
+	}
+	
 	/**
 	 * Retorna a cor do jogador que tem sua vez de jogar.
 	 * @return inteiro que representa a cor do jogador.
