@@ -18,16 +18,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
-public class Board extends JFrame implements ActionListener, ChangeListener {
+public class Board extends JFrame implements ActionListener {
 
 	static private final String SELECTED = new String ("selected");
 	
+	private boolean turno;
+	private int pontos = 0;
 	static Damas jogo;
 	static Jogador j1;
 	static Jogador j2;
 	private JPanel contentPane;
 	private static Celula[][] tabuleiro = new Celula[8][8];
-	private int[][] tabu = new int[8][8];
 
 	/**
 	 * Launch the application.
@@ -68,7 +69,6 @@ public class Board extends JFrame implements ActionListener, ChangeListener {
 				tabuleiro[i][j] = new Celula (i, j, tabu[i][j]);
 				contentPane.add(tabuleiro[i][j]);
 				tabuleiro[i][j].addActionListener(this);
-				tabuleiro[i][j].addChangeListener(this);
 			}
 			
 		}
@@ -83,12 +83,12 @@ public class Board extends JFrame implements ActionListener, ChangeListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int check = 0;
+		int melhor = 1;
 		int i, j;
 		int iniX = 0, iniY = 0;
 		int endX = 0, endY = 0;
 		boolean selectedPeca = false;
 		boolean selectedSlot = false;
-		int J = 0;
 		
 		if (SELECTED.equals(e.getActionCommand())) {
 			
@@ -100,12 +100,10 @@ public class Board extends JFrame implements ActionListener, ChangeListener {
 							if (iniX == i && iniY == j) selectedPeca = false; 
 							iniX = i;
 							iniY = j;
-							J = tabuleiro[i][j].myGetPeca();
 						}
 						else {
 							iniX = i;
 							iniY = j;
-							J = tabuleiro[i][j].myGetPeca();
 							selectedPeca = true;
 						}
 					}
@@ -133,20 +131,40 @@ public class Board extends JFrame implements ActionListener, ChangeListener {
 			if (selectedPeca && selectedSlot) {
 				
 				try {
+					melhor = jogo.melhorJogada(jogo.getJogador());
+					System.out.println("De: " + iniX + "x" + iniY + "Para: " + endX + "x" + endY);
 					check = jogo.fazerMovimento(iniX, iniY, endX, endY, jogo.getJogador());
 					
 					switch (check) {
-						case (-1): jogo.refazerJogada();
+									
+						case (-1):  jogo.refazerJogada();
 									atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
+									System.out.println("Jogada não valida");
+									turno = false;
+									pontos = 0;
+									break;	
+									
+						case (0): 	turno = true;
 									break;
 									
-						case (1): atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
-									break;
-						case (0): jogo.confirmarJogada();
-								  atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+						case (1): 	atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
+									pontos++;
+									turno = true;
 									break;
 					}
+					System.out.println("Melhor: " + melhor + "  Pontos: " + pontos);
+					if (melhor <= pontos && turno) {
+						jogo.confirmarJogada();
+						atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+						pontos = 0;
+						turno = false;
+					}
 					
+					else {
+						jogo.refazerJogada();
+						pontos = 0;
+						turno = false;
+					}
 				} catch (Exception e1) {e1.printStackTrace();}
 				
 				
@@ -180,11 +198,6 @@ public class Board extends JFrame implements ActionListener, ChangeListener {
 				} else tabuleiro[i][j].setEnabled(true);
 			}
 		}
-	}
-	
-	@Override
-	public void stateChanged(ChangeEvent ev){
-		ev.getSource();
 	}
 }
 
