@@ -4,6 +4,7 @@ import main.Jogador;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -59,6 +60,7 @@ public class Board extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Board(int[][] tabu) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Tabuleiro.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 427, 463);
 		contentPane = new JPanel();
