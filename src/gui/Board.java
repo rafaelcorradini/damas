@@ -214,7 +214,7 @@ public class Board extends JFrame implements ActionListener {
 		int i, j;
 		for (i = 0; i < 8; i++) {
 			for (j = 0; j < 8; j++) {
-				if (tabuleiro[i][j].myGetPeca() != cor && tabuleiro[i][j].myGetPeca() != 0) {
+				if (tabuleiro[i][j].myGetPeca() != cor && tabuleiro[i][j].myGetPeca() != 0 &&tabuleiro[i][j].myGetPeca() != cor+2) {
 					tabuleiro[i][j].setEnabled(false);	
 				} else tabuleiro[i][j].setEnabled(true);
 			}
