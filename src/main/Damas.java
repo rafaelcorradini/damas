@@ -343,12 +343,14 @@ public class Damas {
 			jogador2.removePecas(melhorJogada1);
 			melhorJogada1 = 0;
 			vez = 2;
+			pontosRodada = 0;
 		} else {
 			if (melhorJogada2 > pontosRodada)
 				return false;
 			jogador1.removePecas(melhorJogada2);
 			melhorJogada2 = 0;
 			vez = 1;
+			pontosRodada = 0;
 		}
 		return true;
 		
@@ -359,6 +361,7 @@ public class Damas {
 	 */
 	public void refazerJogada() {
 		tabuleiroTemp = cloneTabuleiro(tabuleiro); 
+		pontosRodada = 0;
 	}
 	
 	/**
@@ -414,6 +417,8 @@ public class Damas {
 		
 		if (jogador.getCor() == 1)
 			if (melhorJogada1 < cont+1) melhorJogada1 = cont+1;
+		else
+			if (melhorJogada2 < cont+1) melhorJogada2 = cont+1;
 		
 		if (tabuleiroTemp[i][j] < 3) {
 			if (isInArray(i-2, j+2, tabuleiroTemp))

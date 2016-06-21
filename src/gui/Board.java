@@ -30,6 +30,7 @@ public class Board extends JFrame implements ActionListener {
 	static Jogador j1;
 	static Jogador j2;
 	private JPanel contentPane;
+	private int melhor = 0;
 	private static Celula[][] tabuleiro = new Celula[8][8];
 
 	/**
@@ -95,7 +96,6 @@ public class Board extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int check = 0;
-		int melhor = 1;
 		int i, j;
 		int iniX = 0, iniY = 0;
 		int endX = 0, endY = 0;
@@ -143,17 +143,13 @@ public class Board extends JFrame implements ActionListener {
 			if (selectedPeca && selectedSlot) {
 				
 				try {
-					melhor = jogo.melhorJogada(jogo.getJogador());
+					
 					System.out.println("De: " + iniX + "x" + iniY + "Para: " + endX + "x" + endY);
 					check = jogo.fazerMovimento(iniX, iniY, endX, endY, jogo.getJogador());
 					
 					switch (check) {
 									
-						case (-1):  jogo.refazerJogada();
-									atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
-									System.out.println("Jogada não valida");
-									turno = false;
-									pontos = 0;
+						case (-1):  turno = false;
 									break;	
 									
 						case (0): 	turno = true;
@@ -165,18 +161,25 @@ public class Board extends JFrame implements ActionListener {
 									break;
 					}
 					System.out.println("Melhor: " + melhor + "  Pontos: " + pontos);
-					if (melhor <= pontos && turno) {
+					
+					if (melhor == pontos && turno) {
 						jogo.confirmarJogada();
 						atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+						System.out.println(jogo);
+						melhor = jogo.melhorJogada(jogo.getJogador());
 						pontos = 0;
 						turno = false;
+					}  else if(turno) {
+						atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+						System.out.println(jogo);
+						turno = false;
+					} else {
+						jogo.refazerJogada();
+						atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
+						System.out.println("Jogada nï¿½o valida");
+						pontos = 0;
 					}
 					
-					else {
-						jogo.refazerJogada();
-						pontos = 0;
-						turno = false;
-					}
 				} catch (Exception e1) {e1.printStackTrace();}
 				
 				
