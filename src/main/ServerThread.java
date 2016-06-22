@@ -64,9 +64,11 @@ public class ServerThread extends Thread {
 				throw new Exception("Comando inválido, esperava-se o comando I");
 			j2 = new Jogador(line.split(" ")[1], 2);
 			
-			System.out.println("Jogador1: "+ j1.getNome() + "Cor: "+ j1.getCor());
-			System.out.println("Jogador2: "+ j2.getNome() + "Cor: "+ j2.getCor());
+			System.out.println("Jogador1: "+ j1.getNome() + " Cor: "+ j1.getCor());
+			System.out.println("Jogador2: "+ j2.getNome() + " Cor: "+ j2.getCor());
 			
+			j1Out.println(j2.getNome());
+			j2Out.println(j1.getNome());
 			
 			while(j1In.hasNextLine() || j1In.hasNextLine()) {
 				if (j1In.hasNextLine() && damas.getVez() == 1) {
