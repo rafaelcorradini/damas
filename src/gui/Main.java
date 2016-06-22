@@ -97,7 +97,8 @@ public class Main extends JFrame implements ActionListener{
 		
 		if (ENTRAR.equals(e.getActionCommand())) {
 			
-			if (!textField.getAccessibleContext().equals("")) {
+			if (!textField.getText().equals("")) {
+				System.out.println(textField.getText());
 				iniJogo(textField.getAccessibleContext().toString());
 				frame.setVisible(false);		
 			}	
