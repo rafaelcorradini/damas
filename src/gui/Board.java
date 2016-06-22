@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
@@ -36,11 +37,6 @@ public class Board extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private int melhor = 0;
 	private static Celula[][] tabuleiro = new Celula[8][8];
-	
-	Socket cliente;
-	PrintStream saida;
-	Scanner teclado;
-	Scanner server;
 	
 	
 	/*
@@ -67,11 +63,6 @@ public class Board extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Board(Jogador j1, Jogador j2) throws Exception{
-		
-		cliente = new Socket("192.198.0.15", 9669);
-		saida = new PrintStream(cliente.getOutputStream());
-		teclado = new Scanner(System.in);
-		server = new Scanner(cliente.getInputStream());
 		
 		jogo = new Damas(8, j1, j2);
 	
