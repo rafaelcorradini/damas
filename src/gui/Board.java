@@ -69,7 +69,7 @@ public class Board extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Board(String nome) throws Exception{
-		cliente = new Socket("192.168.0.15", 9669);
+		cliente = new Socket("127.0.0.1", 9669);
 		saida = new PrintStream(cliente.getOutputStream());
 		teclado = new Scanner(System.in);
 		server = new Scanner(cliente.getInputStream());
@@ -133,6 +133,123 @@ public class Board extends JFrame implements ActionListener {
 		}
 	}
 	
+	private void animate(ActionEvent e) {
+	    Thread thread = new Thread(new Runnable() {
+	        public void run() {
+	        	int check = 0;
+	    		int i, j;
+	    		int iniX = 0, iniY = 0;
+	    		int endX = 0, endY = 0;
+	    		boolean selectedPeca = false;
+	    		boolean selectedSlot = false;
+	    		
+	    		
+	    		if (SELECTED.equals(e.getActionCommand())) {
+	    			
+	    			for (i = 0; i < 8; i++) {
+	    				for (j = 0; j < 8; j++) {
+	    					if (tabuleiro[i][j].isSelected() && tabuleiro[i][j].myGetPeca() > 0){
+	    						if (selectedPeca) {
+	    							tabuleiro[i][j].setSelected(false);
+	    							if (iniX == i && iniY == j) selectedPeca = false; 
+	    							iniX = i;
+	    							iniY = j;
+	    						}
+	    						else {
+	    							iniX = i;
+	    							iniY = j;
+	    							selectedPeca = true;
+	    						}
+	    					}
+	    				}
+	    			}
+	    			
+	    			for (i = 0; i < 8; i++) {
+	    				for (j = 0; j < 8; j++) {
+	    					if (tabuleiro[i][j].isSelected() && tabuleiro[i][j].myGetPeca() == 0 && selectedPeca) {
+	    						if (selectedSlot) {
+	    							tabuleiro[endX][endY].setSelected(false);
+	    							if (endX == i && endY == j) selectedSlot = false; 
+	    							endX = i;
+	    							endY = j;
+	    						} else {
+	    							endX = i;
+	    							endY = j;
+	    							selectedSlot = true;
+	    						}
+	    					}
+	    					else if (tabuleiro[i][j].myGetPeca() == 0) tabuleiro[i][j].setSelected(false);
+	    				}
+	    			}
+	    			
+	    			if (selectedPeca && selectedSlot) {
+	    				
+	    				try {
+	    					
+	    					System.out.println("De: " + iniX + "x" + iniY + "Para: " + endX + "x" + endY);
+	    					check = jogo.fazerMovimento(iniX, iniY, endX, endY, jogo.getJogador());
+	    					saida.println("M" + iniX+" "+iniY+" "+endX+" "+endY);
+	    					
+	    					System.out.println("check:"+check);
+	    					
+	    					switch (check) {
+	    									
+	    						case (-1):  turno = false;
+	    									break;	
+	    									
+	    						case (0): 	if(melhor > 0)
+	    										turno = false;
+	    									else
+	    										turno = true;	
+	    									break;
+	    									
+	    						case (1): 	pontos++;
+	    									turno = true;
+	    									break;
+	    					}
+	    					System.out.println("Melhor: " + melhor + "  Pontos: " + pontos);
+	    					
+	    					if (melhor == pontos && turno) {
+	    						
+	    						saida.println("C");
+	    						atualizaTabuleiro();
+	    						jogo.confirmarJogada();
+	    						System.out.println(jogo);
+	    						melhor = jogo.melhorJogada(jogo.getJogador());
+	    						
+	    						pontos = 0;
+	    						turno = false;
+	    						
+	    					}  else if(turno) {
+	    						atualizaTabuleiroAux();
+	    						System.out.println(jogo);
+	    						turno = false;
+	    					} else {
+	    						
+	    						jogo.refazerJogada();
+	    						saida.println("R");
+	    						atualizaTabuleiro();	    						
+	    						System.out.println("Jogada n�o valida");
+	    						pontos = 0;
+	    					}
+	    		
+	    					
+	    				} catch (Exception e1) {e1.printStackTrace();}
+	    				
+	    				
+	    				tabuleiro[endX][endY].setSelected(false);
+	    				tabuleiro[iniX][iniY].setSelected(false);
+	    				selectedPeca = false;
+	    				selectedSlot = false;
+	    			}
+	    		}	
+	    		
+	        }
+	    });
+	    thread.setPriority(Thread.NORM_PRIORITY);
+	    thread.start();
+	}
+	
 	/*
 	public static void goTo() {
 
@@ -143,114 +260,8 @@ public class Board extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int check = 0;
-		int i, j;
-		int iniX = 0, iniY = 0;
-		int endX = 0, endY = 0;
-		boolean selectedPeca = false;
-		boolean selectedSlot = false;
-		
-		
-		if (SELECTED.equals(e.getActionCommand())) {
-			
-			for (i = 0; i < 8; i++) {
-				for (j = 0; j < 8; j++) {
-					if (tabuleiro[i][j].isSelected() && tabuleiro[i][j].myGetPeca() > 0){
-						if (selectedPeca) {
-							tabuleiro[i][j].setSelected(false);
-							if (iniX == i && iniY == j) selectedPeca = false; 
-							iniX = i;
-							iniY = j;
-						}
-						else {
-							iniX = i;
-							iniY = j;
-							selectedPeca = true;
-						}
-					}
-				}
-			}
-			
-			for (i = 0; i < 8; i++) {
-				for (j = 0; j < 8; j++) {
-					if (tabuleiro[i][j].isSelected() && tabuleiro[i][j].myGetPeca() == 0 && selectedPeca) {
-						if (selectedSlot) {
-							tabuleiro[endX][endY].setSelected(false);
-							if (endX == i && endY == j) selectedSlot = false; 
-							endX = i;
-							endY = j;
-						} else {
-							endX = i;
-							endY = j;
-							selectedSlot = true;
-						}
-					}
-					else if (tabuleiro[i][j].myGetPeca() == 0) tabuleiro[i][j].setSelected(false);
-				}
-			}
-			
-			if (selectedPeca && selectedSlot) {
-				
-				try {
-					
-					System.out.println("De: " + iniX + "x" + iniY + "Para: " + endX + "x" + endY);
-					check = jogo.fazerMovimento(iniX, iniY, endX, endY, jogo.getJogador());
-					saida.println("M" + iniX+" "+iniY+" "+endX+" "+endY);
-					
-					System.out.println("check:"+check);
-					
-					switch (check) {
-									
-						case (-1):  turno = false;
-									break;	
-									
-						case (0): 	if(melhor > 0)
-										turno = false;
-									else
-										turno = true;	
-									break;
-									
-						case (1): 	pontos++;
-									turno = true;
-									break;
-					}
-					System.out.println("Melhor: " + melhor + "  Pontos: " + pontos);
-					
-					if (melhor == pontos && turno) {
-						
-						saida.println("C");
-						atualizaTabuleiro();
-						
-						jogo.confirmarJogada();
-						System.out.println(jogo);
-						melhor = jogo.melhorJogada(jogo.getJogador());
-						pontos = 0;
-						turno = false;
-						
-					}  else if(turno) {
-						atualizaTabuleiroAux();
-						System.out.println(jogo);
-						turno = false;
-					} else {
-						
-						jogo.refazerJogada();
-						saida.println("R");
-						
-						atualizaTabuleiro();
-						System.out.println("Jogada n�o valida");
-						pontos = 0;
-					}
-					
-				} catch (Exception e1) {e1.printStackTrace();}
-				
-				
-				tabuleiro[endX][endY].setSelected(false);
-				tabuleiro[iniX][iniY].setSelected(false);
-				selectedPeca = false;
-				selectedSlot = false;
-			}
-		}	
-	
+		 
+		animate(e);
 		//else atualizaTabuleiro();
 	}
 	

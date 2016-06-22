@@ -135,7 +135,6 @@ public class Main extends JFrame implements ActionListener {
 		//System.out.println(server.nextLine());
 		//final String jogador = new String(server.nextLine());
 		//System.out.println(jogador);
-		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
