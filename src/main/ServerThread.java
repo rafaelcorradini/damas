@@ -75,29 +75,34 @@ public class ServerThread extends Thread {
 					line = j1In.nextLine();
 					if(getComando(line).equals("M")) { 
 						ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), j1);
-						j1Out.println("M "+ret);
+						//j1Out.println("M "+ret);
 					} else if(getComando(line).equals("C")) { 
-						if (damas.confirmarJogada())
-							j1Out.println("C "+1);
+						if (damas.confirmarJogada()) {
+							//j1Out.println("C "+1);
+							j2Out.println(damas.getTabuleiroS());
+						}
 					} else if(getComando(line).equals("R")) { 
 						damas.refazerJogada();
-						j1Out.println("R");
+						//j1Out.println("R");
 					}
 					
 				} else if (j1In.hasNextLine() && damas.getVez() == 2) {
 					line = j2In.nextLine();
 					if(getComando(line).equals("M"))  {
 						ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), j2);
-						j2Out.println("M "+ret);
+						//j2Out.println("M "+ret);
 					} else if(getComando(line).equals("C")) { 
-						if (damas.confirmarJogada())
-							j2Out.println("C "+1);
+						if (damas.confirmarJogada()) {
+							//j2Out.println("C "+1);
+							j1Out.println(damas.getTabuleiroS());
+						}
 					} else if(getComando(line).equals("R")) { 
 						damas.refazerJogada();
-						j2Out.println("R");
+						//j2Out.println("R");
 					}
 				}
 				
+				/*
 				if (j2.getPecas() <= 0) {
 					j1Out.println("F 1");
 					j2Out.println("F 0");
@@ -111,7 +116,7 @@ public class ServerThread extends Thread {
 					System.out.println("Jogador2 vencedor");
 					break;
 				}	
-								
+				*/				
 			}	
 		} catch(Exception e) {
 			System.out.println(e);
