@@ -459,7 +459,7 @@ public class Damas {
 					tabuleiroTemp = cloneTabuleiro(tabuleiroT);
 				}				
 			} else {
-				for (int u = tamanho-1, v = diag*2; v < tamanho; u--, v++) {
+				for (int u = tamanho-1, v = (i+j)-(tamanho-1); v < tamanho; u--, v++) {
 					if (fazerMovimento(i, j, u, v, jogador) == 1)
 						melhorJogadaAux(u, v, jogador, cont+1);
 					tabuleiroTemp = cloneTabuleiro(tabuleiroT);
