@@ -37,6 +37,7 @@ public class Board extends JFrame implements ActionListener {
 	/**
 	 * Launch the application.
 	 */
+	
 	public static void main(String[] args) {
 		
 		j1 = new Jogador ("Carlos", 1);
@@ -55,7 +56,7 @@ public class Board extends JFrame implements ActionListener {
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the frame.
 	 */
