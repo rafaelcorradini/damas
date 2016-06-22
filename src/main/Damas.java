@@ -531,4 +531,40 @@ public class Damas {
 		Damas d = new Damas();
 		System.out.println(d);
 	}
+	
+	public void changeVez () {
+		this.vez = this.vez == 1 ? 2 : 1;	
+	}
+	
+	public String getTabuleiroS () {
+		String tabu = new String();
+		int i, j;
+		
+		for (i = 0; i < tamanho; i++) {
+			for (j = 0; j < tamanho; j++) {
+				tabu += tabuleiro[i][j] + " ";
+			}
+		}
+		
+		return tabu;
+	}
+	
+	public void setBoard (String board) {
+		int i, j, k = 0;
+		
+		System.out.print("\n" + board + "\n");
+		
+		for (i = 0; i < tamanho; i++) {
+			for (j = 0; j < tamanho; j++) {
+				tabuleiro[i][j] = getTileInt(board, k);
+				k++;
+			}
+		}
+		tabuleiroTemp = cloneTabuleiro(tabuleiro);
+		pontosRodada = 0;
+	}
+	
+	private int getTileInt(String line, int pos) {
+		return Integer.parseInt(line.split(" ")[pos]);
+	}
 }
