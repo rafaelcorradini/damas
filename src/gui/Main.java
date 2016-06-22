@@ -1,204 +1,131 @@
 package gui;
+
 import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import main.Damas;
+import main.Jogador;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JScrollBar;
+import javax.swing.JPasswordField;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
+public class Main extends JFrame implements ActionListener{
 
-import Placar;
-
-public class Main extends JFrame implements ActionListener {
+	private Damas jogo;
+	private Jogador j1;
+	private Jogador j2;
 	
-	private static final long serialVersionUID = 1L;
-	static private final String NEW_GAME = "new_game";
-	static private final String EXIT_GAME = "exit_game";
-
-	static private final String ROLAR = "rolar_dados";
-	private Placar placar;
-	private RolaDados rd;
-	private int rodada = 0;
-	private int tries = 0;
-	private int[] lastDados;
+	static Main frame;
+	private JPanel contentPane;
+	private JTextField textField;
+	private String ENTRAR = new String ("entrar");
 	
-	
-	private JLabel rdd; // controla a rodada atual 
-	private final String rddString = "Round";
-	private JButton rollButton;  // botão para rolar os dados
-	JTextArea dadosField; // area onde mostrar os dados
-	private JCheckBox[] dadoSel = new JCheckBox[5]; // para selecionar os dados a serem rolados
-	private Vector<JRadioButton> radios = new Vector<JRadioButton>();
-	private JTextArea placarText;
-	private JLabel total;
-	
-	public Main() {
-		super("Ultimate Bozo");
-		JPanel jp = (JPanel) this.getContentPane();
-		jp.setLayout(new GridLayout(1,2));
-		
-		JMenuBar mb = new JMenuBar();
-		this.setJMenuBar(mb);
-		JMenu menu = new JMenu("Game");
-		mb.add(menu);
-		JMenuItem item = new JMenuItem("New");
-		menu.add(item);
-		item.setActionCommand(NEW_GAME);
-		item.addActionListener(this);
-		menu.addSeparator();
-		item = new JMenuItem("Exit");
-		menu.add(item);
-		item.setActionCommand(EXIT_GAME);
-		item.addActionListener(this);
-		
-		
-		JPanel panelL = new JPanel(new BorderLayout());
-		JPanel panelR = new JPanel(new GridLayout(1,2));
-		jp.add(panelL);
-		jp.add(panelR);
-		
-		rdd = new JLabel(rddString);
-		panelL.add(rdd, BorderLayout.NORTH);
-		
-		rollButton = new JButton("Roll");
-		rollButton.setActionCommand(ROLAR);
-		rollButton.addActionListener(this);
-		panelL.add(rollButton, BorderLayout.SOUTH);
-		
-		dadosField = new JTextArea(5,25);
-		dadosField.setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
-		dadosField.setEditable(false);
-		GridLayout gl = new GridLayout(1,5);
-		JPanel aux = new JPanel(gl);
-		gl = new GridLayout(2,1);
-		gl.setVgap(1);
-		JPanel aux2 = new JPanel(gl);
-		aux2.add(dadosField);
-		aux2.add(aux);
-		for (int i = 0; i < 5; i++ )
-		{
-			dadoSel[i] = new JCheckBox();
-			aux.add(dadoSel[i]);
-		}
-		panelL.add(aux2);
-		
-		// Paineis do lado direito
-		JPanel rbPanel = new JPanel(new GridLayout(5,2));
-		ButtonGroup bgroup = new ButtonGroup();
-		for (int i = 0; i < 10; i++) {
-			JRadioButton jrb = new JRadioButton(Placar.getName(i));
-			radios.addElement(jrb);
-			bgroup.add(jrb);
-			rbPanel.add(jrb);
-			jrb.addActionListener(this);
-		}
-		panelR.add(rbPanel);
-		
-		JPanel panelRR = new JPanel(new FlowLayout());
-		panelR.add(panelRR);
-	    placarText = new JTextArea(8,28);
-		placarText.setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
-		placarText.setEditable(false);
-
-	    panelRR.add(placarText);
-	    total = new JLabel("Total :");
-	    panelRR.add(total);
-	    
-	    
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					frame = new Main();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
-	
-	
-	
 
+	/**
+	 * Create the frame.
+	 */
+	public Main() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 232, 148);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel = new JPanel();
+		contentPane.add(panel, BorderLayout.SOUTH);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JButton btnEntrar = new JButton("Entrar");
+		btnEntrar.setActionCommand("entrar");
+		btnEntrar.addActionListener(this);
+		panel.add(btnEntrar);
+		
+		JPanel panel_1 = new JPanel();
+		contentPane.add(panel_1, BorderLayout.CENTER);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblEntreComUm = new JLabel("Entre com um nome de usu\u00E1rio");
+		lblEntreComUm.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(lblEntreComUm, BorderLayout.NORTH);
+		
+		JPanel panel_3 = new JPanel();
+		panel_1.add(panel_3, BorderLayout.CENTER);
+		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		textField = new JTextField();
+		panel_3.add(textField);
+		textField.setColumns(15);
+		
+		JPanel panel_2 = new JPanel();
+		contentPane.add(panel_2, BorderLayout.NORTH);
+		
+		JLabel lblDamasjava = new JLabel("DAMAS.JAVA");
+		panel_2.add(lblDamasjava);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (EXIT_GAME.equals(e.getActionCommand())) {
-			System.exit(0);;
-		} else if (NEW_GAME.equals(e.getActionCommand())) {
-			newGame();
-		} else if (ROLAR.equals(e.getActionCommand())) {
-			if (rodada <= 0 || tries > 3) return;
-			if (tries == 1) 
-				lastDados = rd.rolar();
-			else {
-				boolean v[] = new boolean[5];
-				for (int i = 0; i < 5; i++)
-				{
-					v[i] = dadoSel[i].isSelected();
+		String nome = new String();
+		
+		if (ENTRAR.equals(e.getActionCommand())) {
+			
+			if (!textField.getAccessibleContext().equals("")) {
+				iniJogo(textField.getAccessibleContext().toString());
+				frame.setVisible(false);
+				
+				
+			}
+			
+			
+		}
+		
+	}
+
+	private void iniJogo (String nome) {
+		
+		j1 = new Jogador (nome, 1);
+		j2 = new Jogador ("Pedro", 2);
+		jogo = new Damas(8, j1, j2); //TODO: COLOCAR DENTRO DO CONSTRUTOR DA BOARD
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Board board = new Board(jogo.getTabuleiro());
+					//atualizaTabuleiro(jogo.getTabuleiro(), j1);
+					board.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				lastDados = rd.rolar(v);
 			}
-			tries++;
-			atualizaGUI();	
-		} else if (e.getSource() instanceof JRadioButton) {
-			JRadioButton rb = (JRadioButton) e.getSource();
-			if ( rodada <= 0 || tries <= 1 )
-			{
-				rb.setSelected(false);
-				return;
-			}
-			int k = radios.indexOf(rb);
-			rb.setEnabled(false);
-			placar.add(k, lastDados);
-			tries = 1;
-			rodada = ++rodada % 11;
-			atualizaGUI();	
-		}
+		});
 	}
-
-
-	private void newGame() {
-		placar = new Placar();
-		rd = new RolaDados(5);
-		rodada = 1;
-		tries = 1;
-		for (JRadioButton j : radios) {
-			j.setEnabled(true);
-		}
-		atualizaGUI();
-	}
-
-
-
-
-	private void atualizaGUI() {
-		// if (rodada <= 0) return;
-		rdd.setText(rddString + " " + rodada);
-		if (tries == 1)
-			dadosField.setText("");
-		else
-			dadosField.setText(rd.toString());
-		for (JCheckBox j: dadoSel )
-		{
-			j.setSelected(false);
-		}	
-		placarText.setText(placar.toString());
-		total.setText("Total: " + placar.getScore());
-	}
-	
-	
-	
-	public static void main(String[] args) {
-		Main frame = new Main();
-		frame.setSize(880, 300);
-		//frame.pack();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
-
-
-
+		
 }
