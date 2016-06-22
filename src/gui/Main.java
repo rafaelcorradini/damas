@@ -141,6 +141,7 @@ public class Main extends JFrame implements ActionListener {
 				try {
 					Board board = new Board(nome);
 					board.setVisible(true);
+					//board.atualizaTabuleiro();
 		
 				//atualizaTabuleiro(jogo.getTabuleiro(), j1);
 				} catch (Exception e) {

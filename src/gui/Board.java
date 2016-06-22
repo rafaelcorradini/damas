@@ -42,7 +42,9 @@ public class Board extends JFrame implements ActionListener {
 	private Socket cliente;
 	private PrintStream saida;
 	private Scanner teclado;
-	private Scanner server;	
+	private static Scanner server;	
+	
+	static boolean gambiarra = true;
 	/*
 	public static void main(String[] args) {
 		
@@ -122,8 +124,22 @@ public class Board extends JFrame implements ActionListener {
 		label.setBounds(0, 0, 400, 400);
 		panel.add(label);
 		
-		this.atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+		this.initTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+		this.setVisible(true);
+	
+	
+		if (jogo.getVez() != j1.getCor()) {
+				esperaVez();
+		}
 	}
+	
+	/*
+	public static void goTo() {
+
+		if (jogo.getVez() != j1.getCor()) {
+			esperaVez();
+		}
+	}*/
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -133,6 +149,7 @@ public class Board extends JFrame implements ActionListener {
 		int endX = 0, endY = 0;
 		boolean selectedPeca = false;
 		boolean selectedSlot = false;
+		
 		
 		if (SELECTED.equals(e.getActionCommand())) {
 			
@@ -201,16 +218,17 @@ public class Board extends JFrame implements ActionListener {
 					
 					if (melhor == pontos && turno) {
 						
-						jogo.confirmarJogada();
 						saida.println("C");
+						atualizaTabuleiro();
 						
-						atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+						jogo.confirmarJogada();
 						System.out.println(jogo);
 						melhor = jogo.melhorJogada(jogo.getJogador());
 						pontos = 0;
 						turno = false;
+						
 					}  else if(turno) {
-						atualizaTabuleiro(jogo.getTabuleiroTemp(), jogo.getJogador());
+						atualizaTabuleiroAux();
 						System.out.println(jogo);
 						turno = false;
 					} else {
@@ -218,7 +236,7 @@ public class Board extends JFrame implements ActionListener {
 						jogo.refazerJogada();
 						saida.println("R");
 						
-						atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+						atualizaTabuleiro();
 						System.out.println("Jogada n�o valida");
 						pontos = 0;
 					}
@@ -230,13 +248,52 @@ public class Board extends JFrame implements ActionListener {
 				tabuleiro[iniX][iniY].setSelected(false);
 				selectedPeca = false;
 				selectedSlot = false;
-				
-				
-			}	
-		}		
+			}
+		}	
+	
+		//else atualizaTabuleiro();
+	}
+	
+	static public void initTabuleiro(int tabu[][], Jogador jogador) {
+		int i, j;
+		for (i = 0; i < 8; i++) {
+			for (j = 0; j < 8; j++) {
+				tabuleiro[i][j].mySetPeca(tabu[i][j]);
+			}
+		}
+		unablePecas (jogador.getCor());
+		
+		if (jogo.getVez() == j1.getCor()) labelTop.setText("Sua vez");
+		else labelTop.setText(jogo.getJogador().getNome() + " esta jogando...");
+		
 	}
 
-	static public void atualizaTabuleiro(int tabu[][], Jogador jogador) {
+	static public void atualizaTabuleiro() {
+		int tabu[][] = jogo.getTabuleiro();
+		Jogador jogador = jogo.getJogador();
+		
+		atualizaTabuleiroAux();
+		labelTop.setText(jogo.getJogador().getNome() + " esta jogando...");
+		unablePecas (jogador.getCor());
+		
+		gambiarra = true;
+	}
+	
+	static public void esperaVez() {
+		
+		jogo.setBoard(server.nextLine());
+		jogo.changeVez();
+		
+		atualizaTabuleiroAux();
+		labelTop.setText("Sua vez");
+		unablePecas (jogo.getVez());
+		
+		gambiarra = false;
+	}
+	
+	static private void atualizaTabuleiroAux() {
+		int tabu[][] = jogo.getTabuleiro();
+		
 		int i, j;
 		for (i = 0; i < 8; i++) {
 			for (j = 0; j < 8; j++) {
@@ -244,8 +301,6 @@ public class Board extends JFrame implements ActionListener {
 			}
 		}
 		
-		labelTop.setText("JOGADOR " + jogo.getJogador().getNome());
-		unablePecas (jogador.getCor());
 	}
 	
 	public static void unablePecas(int cor) {
@@ -271,5 +326,6 @@ public class Board extends JFrame implements ActionListener {
 			}
 		}
 	}
+	
 }
 
