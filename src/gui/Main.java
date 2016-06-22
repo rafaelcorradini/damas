@@ -33,6 +33,7 @@ public class Main extends JFrame implements ActionListener {
 	private Jogador j2;
 	
 	static Main frame;
+	JLabel lblEntreComUm;
 	private JPanel contentPane;
 	private JTextField textField;
 	private String ENTRAR = new String ("entrar");
@@ -77,7 +78,7 @@ public class Main extends JFrame implements ActionListener {
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblEntreComUm = new JLabel("Entre com um nome de usu\u00E1rio");
+		lblEntreComUm = new JLabel("Entre com um nome de usu\u00E1rio");
 		lblEntreComUm.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblEntreComUm, BorderLayout.NORTH);
 		
@@ -104,8 +105,9 @@ public class Main extends JFrame implements ActionListener {
 			
 			if (!textField.getText().equals("")) {
 				System.out.println(textField.getText());
+				lblEntreComUm.setText("Aguarde a Conexao");
 				try {
-					iniJogo(textField.getAccessibleContext().toString());
+					iniJogo(textField.getText());
 				} catch (UnknownHostException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -118,25 +120,29 @@ public class Main extends JFrame implements ActionListener {
 		}
 	}
 
-	private void iniJogo (String nome) throws UnknownHostException, IOException {
+	private void iniJogo (final String nome) throws UnknownHostException, IOException {
 		
-		j1 = new Jogador (nome, 1);
-		j2 = new Jogador ("Pedro", 2);
+		//j1 = new Jogador (nome, 1);
+		//j2 = new Jogador ("Outro Nome", 2);
+		//Board board;
 		//jogo = new Damas(8, j1, j2);
 		
-		Socket cliente = new Socket("127.0.0.1", 9669);
+		/*final Socket cliente = new Socket("192.168.0.15", 9669);
 		PrintStream saida = new PrintStream(cliente.getOutputStream());
 		Scanner teclado = new Scanner(System.in);
-		Scanner server = new Scanner(cliente.getInputStream());
-		
-		
+		final Scanner server = new Scanner(cliente.getInputStream());
+		*/
+		//System.out.println(server.nextLine());
+		//final String jogador = new String(server.nextLine());
+		//System.out.println(jogador);
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Board board = new Board(j1, j2);
-					//atualizaTabuleiro(jogo.getTabuleiro(), j1);
+					Board board = new Board(nome);
 					board.setVisible(true);
+		
+				//atualizaTabuleiro(jogo.getTabuleiro(), j1);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
