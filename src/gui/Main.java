@@ -113,12 +113,12 @@ public class Main extends JFrame implements ActionListener{
 		
 		j1 = new Jogador (nome, 1);
 		j2 = new Jogador ("Pedro", 2);
-		jogo = new Damas(8, j1, j2); //TODO: COLOCAR DENTRO DO CONSTRUTOR DA BOARD
+		//jogo = new Damas(8, j1, j2);
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Board board = new Board(jogo.getTabuleiro());
+					Board board = new Board(j1, j2);
 					//atualizaTabuleiro(jogo.getTabuleiro(), j1);
 					board.setVisible(true);
 				} catch (Exception e) {
