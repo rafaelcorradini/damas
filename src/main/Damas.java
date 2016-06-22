@@ -64,6 +64,7 @@ public class Damas {
 		this.jogador2.setCor(2);
 		jogador1.setPecas((tamanho-2) * tamanho / 4);
 		jogador2.setPecas((tamanho-2) * tamanho / 4);
+		this.vez = 1;
 	}
 	
 	/**
@@ -137,7 +138,8 @@ public class Damas {
 	 * @return Objeto Jogador.
 	 */
 	public Jogador getJogador() {
-		return vez == 1 ? jogador1 : jogador2;
+		System.out.println("VEZ: " + getVez() + "JOGADOR VEZ : " + jogador1.getNome());
+		return getVez()== 1 ? jogador1 : jogador2;
 	}
 	
 	public int getPontosRodada() {
