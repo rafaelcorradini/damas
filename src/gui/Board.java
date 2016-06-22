@@ -28,17 +28,21 @@ public class Board extends JFrame implements ActionListener {
 
 	static private final String SELECTED = new String ("selected");
 	
-	private static JLabel labelTop;
-	private boolean turno;
-	private int pontos = 0;
 	static Damas jogo;
 	static Jogador j1;
 	static Jogador j2;
-	private JPanel contentPane;
+	private boolean turno;
+	private int pontos = 0;
 	private int melhor = 0;
+	
+	private JPanel contentPane;
+	private static JLabel labelTop;
 	private static Celula[][] tabuleiro = new Celula[8][8];
 	
-	
+	private Socket cliente;
+	private PrintStream saida;
+	private Scanner teclado;
+	private Scanner server;	
 	/*
 	public static void main(String[] args) {
 		
@@ -62,11 +66,29 @@ public class Board extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public Board(Jogador j1, Jogador j2) throws Exception{
+	public Board(String nome) throws Exception{
+		cliente = new Socket("192.168.0.15", 9669);
+		saida = new PrintStream(cliente.getOutputStream());
+		teclado = new Scanner(System.in);
+		server = new Scanner(cliente.getInputStream());
 		
-		jogo = new Damas(8, j1, j2);
-	
+		server.nextLine();
+		String jogador = new String(server.nextLine());
 		
+		saida.println("I "+nome);
+
+		String nome2 = new String (server.nextLine());
+		
+		if (jogador.equals("J 1")) {
+			j1 = new Jogador(nome, 1);
+			j2 = new Jogador(nome2, 2);
+			jogo = new Damas(8, j1, j2);
+		}
+		else if (jogador.equals("J 2")) {
+			j1 = new Jogador(nome, 2);
+			j2 = new Jogador(nome2, 1);	
+			jogo = new Damas(8, j2, j1);
+		}
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Tabuleiro.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,7 +98,7 @@ public class Board extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		labelTop = new JLabel("JOGADOR 1");
+		labelTop = new JLabel("Aguarde um parceiro para jogar");
 		labelTop.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(labelTop, BorderLayout.NORTH);
 		
@@ -84,25 +106,23 @@ public class Board extends JFrame implements ActionListener {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		
-		
 		int i, j;
 		for (i = 0; i < 8; i++) {
 			for (j = 0; j < 8; j++) {
 				tabuleiro[i][j] = new Celula (i, j, jogo.getTabuleiro()[i][j]);
 				panel.add(tabuleiro[i][j]);
 				tabuleiro[i][j].addActionListener(this);
+				tabuleiro[i][j].setEnabled(false);
 			}
 			
 		}
-	
+		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(this.getClass().getResource("/Tabuleiro.png")));
 		label.setBounds(0, 0, 400, 400);
 		panel.add(label);
 		
 		this.atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
-		
 	}
 
 	@Override
@@ -158,6 +178,8 @@ public class Board extends JFrame implements ActionListener {
 					
 					System.out.println("De: " + iniX + "x" + iniY + "Para: " + endX + "x" + endY);
 					check = jogo.fazerMovimento(iniX, iniY, endX, endY, jogo.getJogador());
+					saida.println("M" + iniX+" "+iniY+" "+endX+" "+endY);
+					
 					System.out.println("check:"+check);
 					
 					switch (check) {
@@ -178,7 +200,10 @@ public class Board extends JFrame implements ActionListener {
 					System.out.println("Melhor: " + melhor + "  Pontos: " + pontos);
 					
 					if (melhor == pontos && turno) {
+						
 						jogo.confirmarJogada();
+						saida.println("C");
+						
 						atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
 						System.out.println(jogo);
 						melhor = jogo.melhorJogada(jogo.getJogador());
@@ -189,7 +214,10 @@ public class Board extends JFrame implements ActionListener {
 						System.out.println(jogo);
 						turno = false;
 					} else {
+						
 						jogo.refazerJogada();
+						saida.println("R");
+						
 						atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
 						System.out.println("Jogada n�o valida");
 						pontos = 0;
@@ -216,17 +244,30 @@ public class Board extends JFrame implements ActionListener {
 			}
 		}
 		
-		labelTop.setText("JOGADOR " + jogo.getVez());
+		labelTop.setText("JOGADOR " + jogo.getJogador().getNome());
 		unablePecas (jogador.getCor());
 	}
 	
 	public static void unablePecas(int cor) {
 		int i, j;
-		for (i = 0; i < 8; i++) {
-			for (j = 0; j < 8; j++) {
-				if (tabuleiro[i][j].myGetPeca() != cor && tabuleiro[i][j].myGetPeca() != 0 &&tabuleiro[i][j].myGetPeca() != cor+2) {
-					tabuleiro[i][j].setEnabled(false);	
-				} else tabuleiro[i][j].setEnabled(true);
+		
+		if (j1.getCor() == cor) {
+			for (i = 0; i < 8; i++) {
+				for (j = 0; j < 8; j++) {
+					if (tabuleiro[i][j].myGetPeca() != cor && tabuleiro[i][j].myGetPeca() != 0 &&tabuleiro[i][j].myGetPeca() != cor+2) {
+						tabuleiro[i][j].setEnabled(false);	
+					} else tabuleiro[i][j].setEnabled(true);
+				}
+			}
+		}
+		
+		else {
+			
+			for (i = 0; i < 8; i++) {
+				for (j = 0; j < 8; j++) {
+					tabuleiro[i][j].setEnabled(false);
+				}
+				
 			}
 		}
 	}
