@@ -96,6 +96,8 @@ public class Board extends JFrame implements ActionListener {
 		label.setBounds(0, 0, 400, 400);
 		panel.add(label);
 		
+		this.atualizaTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+		
 	}
 
 	@Override
