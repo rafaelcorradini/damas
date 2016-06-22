@@ -37,7 +37,7 @@ public class Board extends JFrame implements ActionListener {
 	/**
 	 * Launch the application.
 	 */
-	
+	/*
 	public static void main(String[] args) {
 		
 		j1 = new Jogador ("Carlos", 1);
@@ -56,11 +56,13 @@ public class Board extends JFrame implements ActionListener {
 			}
 		});
 	}
-	
+	*/
 	/**
 	 * Create the frame.
 	 */
-	public Board(int[][] tabu) {
+	public Board(Jogador j1, Jogador j2) {
+		jogo = new Damas(8, j1, j2);
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Tabuleiro.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 427, 463);
@@ -82,7 +84,7 @@ public class Board extends JFrame implements ActionListener {
 		int i, j;
 		for (i = 0; i < 8; i++) {
 			for (j = 0; j < 8; j++) {
-				tabuleiro[i][j] = new Celula (i, j, tabu[i][j]);
+				tabuleiro[i][j] = new Celula (i, j, jogo.getTabuleiro()[i][j]);
 				panel.add(tabuleiro[i][j]);
 				tabuleiro[i][j].addActionListener(this);
 			}
