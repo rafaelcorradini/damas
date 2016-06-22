@@ -20,8 +20,13 @@ import javax.swing.JPasswordField;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
 
-public class Main extends JFrame implements ActionListener{
+public class Main extends JFrame implements ActionListener {
 
 	private Damas jogo;
 	private Jogador j1;
@@ -35,7 +40,7 @@ public class Main extends JFrame implements ActionListener{
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -51,7 +56,7 @@ public class Main extends JFrame implements ActionListener{
 	/**
 	 * Create the frame.
 	 */
-	public Main() {
+	public Main() throws Exception{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 232, 148);
 		contentPane = new JPanel();
@@ -99,17 +104,32 @@ public class Main extends JFrame implements ActionListener{
 			
 			if (!textField.getText().equals("")) {
 				System.out.println(textField.getText());
-				iniJogo(textField.getAccessibleContext().toString());
+				try {
+					iniJogo(textField.getAccessibleContext().toString());
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setVisible(false);		
 			}	
 		}
 	}
 
-	private void iniJogo (String nome) {
+	private void iniJogo (String nome) throws UnknownHostException, IOException {
 		
 		j1 = new Jogador (nome, 1);
 		j2 = new Jogador ("Pedro", 2);
 		//jogo = new Damas(8, j1, j2);
+		
+		Socket cliente = new Socket("127.0.0.1", 9669);
+		PrintStream saida = new PrintStream(cliente.getOutputStream());
+		Scanner teclado = new Scanner(System.in);
+		Scanner server = new Scanner(cliente.getInputStream());
+		
+		
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
