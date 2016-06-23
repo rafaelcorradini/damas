@@ -313,18 +313,18 @@ public class Board extends JFrame implements ActionListener {
 		
 		else if (line.equals("V1")) {
 			if (j1.getCor() == 1) {
-				labelTop.setText("Você venceu!");
+				labelTop.setText("Vocï¿½ venceu!");
 			}
-			else labelTop.setText("Você perdeu");
+			else labelTop.setText("Vocï¿½ perdeu");
 			
 			unablePecas(10);
 		}
 		
 		else if (line.equals("V2")) {
 			if (j1.getCor() == 2) {
-				labelTop.setText("Você venceu!");
+				labelTop.setText("Vocï¿½ venceu!");
 			}
-			else labelTop.setText("Você perdeu");
+			else labelTop.setText("Vocï¿½ perdeu");
 			
 			unablePecas(10);
 		}
