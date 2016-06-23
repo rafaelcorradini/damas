@@ -118,7 +118,7 @@ public class ServerThread extends Thread {
 					}
 				}
 				
-				
+				System.out.println(damas.getVitoria());
 				if (damas.getVitoria() == 1) {
 					j1Out.println("V1");
 					j2Out.println("V1");
