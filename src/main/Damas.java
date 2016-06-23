@@ -595,11 +595,20 @@ public class Damas {
 	}
 	
 	public int getVitoria() {
-		System.out.println(jogador1.getPecas());
-		System.out.println(jogador2.getPecas());
+		int i, j;
+		int j1 = 0;
+		int j2 = 0;
 		
-		if (jogador1.getPecas() <= 0) return 1;
-		else if (jogador2.getPecas() <= 0) return 2;
+		for (i = 0; i < tamanho; i++) {
+			for (j = 0; j < tamanho; j++) {
+				if (tabuleiro[i][j] == 1 || tabuleiro[i][j] == 3) j1++;
+				else if (tabuleiro[i][j] == 2 || tabuleiro[i][j] == 4) j2++;
+			}
+		}
+		
+		if (j1 == 0) return 2;
+		else if (j2 == 0) return 1;
 		else return 0;
+
 	}
 }
