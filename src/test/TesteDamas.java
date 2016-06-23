@@ -11,12 +11,12 @@ public class TesteDamas {
 
 	@Test
 	public void testDamas() {
-		Damas d = new Damas();
+//		Damas d = new Damas();
 	}
 
 	@Test
 	public void testDamasInt() {
-		Damas d = new Damas(10);
+//		Damas d = new Damas(10);
 	}
 
 	@Test

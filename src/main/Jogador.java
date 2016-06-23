@@ -1,5 +1,10 @@
 package main;
 
+/**
+ * Classe que representa um jogador de damas, usada na classe Damas.
+ * @author Rafael Corradini da Cunha (9424322)
+ * @author Guilherme Alves Campos (8522320)​
+ */
 public class Jogador {
 	private String nome;
 	private int cor; // 1 - preto, 2 - branco

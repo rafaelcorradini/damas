@@ -6,7 +6,6 @@ import java.net.Socket;
  * Classe que representa um servidor de uma conexão socket que manipula o jogo de damas
  * @author Rafael Corradini da Cunha (9424322)
  * @author Guilherme Alves Campos (8522320)
- *
  */
 public class Servidor {
 	public static void main(String[] args) throws Exception {

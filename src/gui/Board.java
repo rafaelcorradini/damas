@@ -20,8 +20,9 @@ import java.util.Scanner;
 import java.awt.event.ActionEvent;
 
 /**
- * INterface que representa um tabuleiro de Damas. Se conecta com o servidor
- * @author Guilherme Alves Campos
+ * Interface que representa um tabuleiro de Damas. Se conecta com o servidor
+ * @author Rafael Corradini da Cunha (9424322)
+ * @author Guilherme Alves Campos (8522320)
  *
  */
 public class Board extends JFrame implements ActionListener {

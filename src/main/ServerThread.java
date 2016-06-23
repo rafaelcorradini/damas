@@ -7,7 +7,7 @@ import java.util.Scanner;
 /**
  * Usado na classe Servidor para que o mesmo aceite várias conexões simultaneas parelelas de clientes
  * @author Rafael Corradini da Cunha (9424322)
- *
+ * @author Guilherme Alves Campos (8522320)
  */
 public class ServerThread extends Thread {
 	private Socket jogador1;
@@ -38,7 +38,6 @@ public class ServerThread extends Thread {
 		String line = null;
 		Jogador j1 = null;
 		Jogador j2 = null;
-		int ret;
 		Jogador jTemp = null;
 		Damas damas = null;
 		
@@ -85,7 +84,7 @@ public class ServerThread extends Thread {
 				}
 				System.out.println(line);
 				if(getComando(line).equals("M")) { 
-					ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), jTemp);
+					damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), jTemp);
 				} else if(getComando(line).equals("C")) { 
 					if (damas.confirmarJogada()) {
 						if (damas.getVez() == 2) {

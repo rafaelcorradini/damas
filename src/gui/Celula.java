@@ -4,8 +4,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
 /**
- * O objeto representa uma célula no tabuleiro. Pode conter uma peça Branca, Preta, Dama Branca, Dama Preta ou estar vazia.
- * @author Guilherme
+ * O objeto representa uma cï¿½lula no tabuleiro. Pode conter uma peï¿½a Branca, Preta, Dama Branca, Dama Preta ou estar vazia.
+ * @author Rafael Corradini da Cunha (9424322)
+ * @author Guilherme Alves Campos (8522320)
  */
 public class Celula extends JToggleButton {
 
@@ -15,9 +16,9 @@ public class Celula extends JToggleButton {
 	
 	/**
 	 * Construtor
-	 * @param x POsição x da celula
-	 * @param y Posiçao y da celula
-	 * @param peca Inteiro representando a peça armazenada na celula:<\n>-1 - Celula incacessivel<\n>0 - Vazia<\n>1 - Preta<\n>2 -  Branca<\n>3 - Dama Preta<\n>4 - Dama Branca
+	 * @param x POsiï¿½ï¿½o x da celula
+	 * @param y Posiï¿½ao y da celula
+	 * @param peca Inteiro representando a peï¿½a armazenada na celula:<\n>-1 - Celula incacessivel<\n>0 - Vazia<\n>1 - Preta<\n>2 -  Branca<\n>3 - Dama Preta<\n>4 - Dama Branca
 	 */
 	Celula (int x, int y, int peca){
 		super("");
@@ -25,11 +26,11 @@ public class Celula extends JToggleButton {
 		this.y = y;
 		this.peca = peca;
 		
-		//Configs para que a pessa fique invisível
+		//Configs para que a pessa fique invisï¿½vel
 		this.setContentAreaFilled(false);
 		this.setBorderPainted(false);
 		this.setVisible(true);
-		this.setBounds(50*y, 50*x, 50, 50); //Posição no absolut layout
+		this.setBounds(50*y, 50*x, 50, 50); //Posiï¿½ï¿½o no absolut layout
 		this.setActionCommand("selected");
 		this.mySetPeca (peca);
 		
@@ -53,15 +54,15 @@ public class Celula extends JToggleButton {
 	
 	/**
 	 * Retorna a peca contida na celula
-	 * @return Inteiro representando a peça armazenada na celula:<\n>-1 - Celula incacessivel<\n>0 - Vazia<\n>1 - Preta<\n>2 -  Branca<\n>3 - Dama Preta<\n>4 - Dama Branca
+	 * @return Inteiro representando a peï¿½a armazenada na celula:<\n>-1 - Celula incacessivel<\n>0 - Vazia<\n>1 - Preta<\n>2 -  Branca<\n>3 - Dama Preta<\n>4 - Dama Branca
 	 */
 	public int myGetPeca () {
 		return peca;
 	}
 	
 	/**
-	 * Coloca/troca a peça dentro da celula, atualizando o icone.
-	 * @param x Inteiro representando a peça armazenada na celula:<\n>-1 - Celula incacessivel<\n>0 - Vazia<\n>1 - Preta<\n>2 -  Branca<\n>3 - Dama Preta<\n>4 - Dama Branca
+	 * Coloca/troca a peï¿½a dentro da celula, atualizando o icone.
+	 * @param x Inteiro representando a peï¿½a armazenada na celula:<\n>-1 - Celula incacessivel<\n>0 - Vazia<\n>1 - Preta<\n>2 -  Branca<\n>3 - Dama Preta<\n>4 - Dama Branca
 	 */
 	public void mySetPeca (int x) {
 		
