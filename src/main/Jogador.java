@@ -15,6 +15,7 @@ public class Jogador {
 		if (cor != 1 && cor != 2) 
 			throw new IllegalArgumentException("Número da cor inválido.");
 		this.cor = cor;
+		pecas = 12;
 	}
 	
 	/**
