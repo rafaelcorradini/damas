@@ -532,11 +532,20 @@ public class Damas {
 		System.out.println(d);
 	}
 	
+	/**
+	 * Método usado para forçar uma mudana de turno
+	 */
 	public void changeVez () {
 		this.vez = this.vez == 1 ? 2 : 1;	
 	}
 	
+	/**
+	 * Método converte o tabuleiro em uma string e o retorna
+	 * @return String representando o tabuleiro
+	 */
 	public String getTabuleiroS () {
+		System.out.println("GettabuleiroS");
+		
 		String tabu = new String();
 		int i, j;
 		
@@ -549,6 +558,10 @@ public class Damas {
 		return tabu;
 	}
 	
+	/**
+	 * Método que recebe uma String e a converte tabuleiro armazenado
+	 * @param board String representando um tabuleiro
+	 */
 	public void setBoard (String board) {
 		int i, j, k = 0;
 		
