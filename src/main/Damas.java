@@ -537,11 +537,10 @@ public class Damas {
 	}
 	
 	public String getTabuleiroS () {
-		String tabu = new String();
-		int i, j;
+		String tabu = "";
 		
-		for (i = 0; i < tamanho; i++) {
-			for (j = 0; j < tamanho; j++) {
+		for (int i = 0; i < tamanho; i++) {
+			for (int j = 0; j < tamanho; j++) {
 				tabu += tabuleiro[i][j] + " ";
 			}
 		}
@@ -550,16 +549,17 @@ public class Damas {
 	}
 	
 	public void setBoard (String board) {
-		int i, j, k = 0;
+		int k = 0;
 		
 		System.out.print("\n" + board + "\n");
 		
-		for (i = 0; i < tamanho; i++) {
-			for (j = 0; j < tamanho; j++) {
+		for (int i = 0; i < tamanho; i++) {
+			for (int j = 0; j < tamanho; j++) {
 				tabuleiro[i][j] = getTileInt(board, k);
 				k++;
 			}
 		}
+		toString();
 		tabuleiroTemp = cloneTabuleiro(tabuleiro);
 		pontosRodada = 0;
 	}

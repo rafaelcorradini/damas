@@ -37,6 +37,8 @@ public class ServerThread extends Thread {
 		Jogador j1 = null;
 		Jogador j2 = null;
 		int ret;
+		Jogador jtemp = null;
+		
 		Damas damas = new Damas();
 		
 		try {
@@ -67,40 +69,76 @@ public class ServerThread extends Thread {
 			System.out.println("Jogador1: "+ j1.getNome() + " Cor: "+ j1.getCor());
 			System.out.println("Jogador2: "+ j2.getNome() + " Cor: "+ j2.getCor());
 			
-			j1Out.println(j2.getNome());
-			j2Out.println(j1.getNome());
+			j1Out.println("outro jogador: "+j2.getNome());
+			j2Out.println("outro jogador: "+j1.getNome());
 			
-			while(j1In.hasNextLine() || j1In.hasNextLine()) {
-				if (j1In.hasNextLine() && damas.getVez() == 1) {
+			
+			
+			while(true) {
+				System.out.println("vez: "+damas.getVez());
+				
+				
+				if (damas.getVez() == 1) {
 					line = j1In.nextLine();
-					if(getComando(line).equals("M")) { 
-						ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), j1);
-						//j1Out.println("M "+ret);
-					} else if(getComando(line).equals("C")) { 
-						if (damas.confirmarJogada()) {
-							//j1Out.println("C "+1);
-							j2Out.println(damas.getTabuleiroS());
-						}
-					} else if(getComando(line).equals("R")) { 
-						damas.refazerJogada();
-						//j1Out.println("R");
-					}
-					
-				} else if (j1In.hasNextLine() && damas.getVez() == 2) {
+					jtemp = j1;	
+				} else {
 					line = j2In.nextLine();
-					if(getComando(line).equals("M"))  {
-						ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), j2);
-						//j2Out.println("M "+ret);
-					} else if(getComando(line).equals("C")) { 
-						if (damas.confirmarJogada()) {
-							//j2Out.println("C "+1);
+					jtemp = j2;
+				}
+				System.out.println(line);
+				if(getComando(line).equals("M")) { 
+					ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), jtemp);
+					//j1Out.println("M "+ret);
+				} else if(getComando(line).equals("C")) { 
+					if (damas.confirmarJogada()) {
+						//j1Out.println("C "+1);
+						if (damas.getVez() == 2) {
+							j2Out.println(damas.getTabuleiroS());
+						} else {
 							j1Out.println(damas.getTabuleiroS());
 						}
-					} else if(getComando(line).equals("R")) { 
-						damas.refazerJogada();
-						//j2Out.println("R");
+						
 					}
+				} else if(getComando(line).equals("R")) { 
+					damas.refazerJogada();
+					//j1Out.println("R");
 				}
+				
+				
+//				if (damas.getVez() == 1) {
+//					System.out.println("entrou no 1");
+//					line = j1In.nextLine();
+//					System.out.println(line);
+//					if(getComando(line).equals("M")) { 
+//						ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), j1);
+//						//j1Out.println("M "+ret);
+//					} else if(getComando(line).equals("C")) { 
+//						if (damas.confirmarJogada()) {
+//							//j1Out.println("C "+1);
+//							j2Out.println(damas.getTabuleiroS());
+//						}
+//					} else if(getComando(line).equals("R")) { 
+//						damas.refazerJogada();
+//						//j1Out.println("R");
+//					}
+//					
+//				} else {
+//					line = j2In.nextLine();
+//					System.out.println(line);
+//					System.out.println("entrou no 2");
+//					if(getComando(line).equals("M"))  {
+//						ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), j2);
+//						//j2Out.println("M "+ret);
+//					} else if(getComando(line).equals("C")) { 
+//						if (damas.confirmarJogada()) {
+//							//j2Out.println("C "+1);
+//							j1Out.println(damas.getTabuleiroS());
+//						}
+//					} else if(getComando(line).equals("R")) { 
+//						damas.refazerJogada();
+//						//j2Out.println("R");
+//					}
+//				}
 				
 				/*
 				if (j2.getPecas() <= 0) {
@@ -121,6 +159,7 @@ public class ServerThread extends Thread {
 		} catch(Exception e) {
 			System.out.println(e);
 		}
+		System.out.println("desconectado");
 	}
 	
 	private String getComando(String line) {

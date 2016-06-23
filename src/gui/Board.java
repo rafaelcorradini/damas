@@ -128,8 +128,8 @@ public class Board extends JFrame implements ActionListener {
 		this.setVisible(true);
 	
 	
-		if (jogo.getVez() != j1.getCor()) {
-				esperaVez();
+		if (j1.getCor() == 2) {
+			esperaVez();
 		}
 	}
 	
@@ -188,7 +188,8 @@ public class Board extends JFrame implements ActionListener {
 	    					
 	    					System.out.println("De: " + iniX + "x" + iniY + "Para: " + endX + "x" + endY);
 	    					check = jogo.fazerMovimento(iniX, iniY, endX, endY, jogo.getJogador());
-	    					saida.println("M" + iniX+" "+iniY+" "+endX+" "+endY);
+	    					System.out.println("check:"+ check);
+	    					saida.println("M " + iniX+" " +iniY+" " +endX+" "+endY);
 	    					
 	    					System.out.println("check:"+check);
 	    					
@@ -210,15 +211,16 @@ public class Board extends JFrame implements ActionListener {
 	    					System.out.println("Melhor: " + melhor + "  Pontos: " + pontos);
 	    					
 	    					if (melhor == pontos && turno) {
-	    						
+	    						System.out.println("mandouuu");
 	    						saida.println("C");
-	    						atualizaTabuleiro();
 	    						jogo.confirmarJogada();
+	    						atualizaTabuleiro();
 	    						System.out.println(jogo);
 	    						melhor = jogo.melhorJogada(jogo.getJogador());
 	    						
 	    						pontos = 0;
 	    						turno = false;
+	    						esperaVez();
 	    						
 	    					}  else if(turno) {
 	    						atualizaTabuleiroAux();
@@ -260,9 +262,7 @@ public class Board extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		 
 		animate(e);
-		//else atualizaTabuleiro();
 	}
 	
 	static public void initTabuleiro(int tabu[][], Jogador jogador) {
@@ -291,13 +291,21 @@ public class Board extends JFrame implements ActionListener {
 	}
 	
 	static public void esperaVez() {
-		
-		jogo.setBoard(server.nextLine());
+		String line = server.nextLine();
+		System.out.println("board: "+line);
+		jogo.setBoard(line);
 		jogo.changeVez();
+		System.out.println("---"+jogo.getVez());
 		
 		atualizaTabuleiroAux();
 		labelTop.setText("Sua vez");
 		unablePecas (jogo.getVez());
+		try {
+			jogo.melhorJogada(jogo.getJogador());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		gambiarra = false;
 	}
