@@ -231,7 +231,7 @@ public class Board extends JFrame implements ActionListener {
 	    						melhor = jogo.melhorJogada(jogo.getJogador());
 	    						
 	    					}  else if(turno) {
-	    						atualizaTabuleiroAux();
+	    						atualizaTabuleiroAux(jogo.getTabuleiroTemp());
 	    						System.out.println(jogo);
 	    						turno = false;
 	    					} else {
@@ -295,7 +295,7 @@ public class Board extends JFrame implements ActionListener {
 		int tabu[][] = jogo.getTabuleiro();
 		Jogador jogador = jogo.getJogador();
 		
-		atualizaTabuleiroAux();
+		atualizaTabuleiroAux(jogo.getTabuleiro());
 		labelTop.setText(jogo.getJogador().getNome() + " esta jogando...");
 		unablePecas (jogador.getCor());
 		
@@ -334,7 +334,7 @@ public class Board extends JFrame implements ActionListener {
 			jogo.changeVez();
 			System.out.println("---"+jogo.getVez());
 		
-			atualizaTabuleiroAux();
+			atualizaTabuleiroAux(jogo.getTabuleiro());
 			labelTop.setText("Sua vez");
 			unablePecas (jogo.getVez());
 		}
@@ -342,8 +342,8 @@ public class Board extends JFrame implements ActionListener {
 		gambiarra = false;
 	}
 	
-	static private void atualizaTabuleiroAux() {
-		int tabu[][] = jogo.getTabuleiro();
+	static private void atualizaTabuleiroAux(int tabu[][]) {
+		//int tabu[][] = jogo.getTabuleiro();
 		
 		int i, j;
 		for (i = 0; i < 8; i++) {
