@@ -72,7 +72,7 @@ public class Board extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Board(String nome) throws Exception{
-		cliente = new Socket("192.168.0.15", 9669);
+		cliente = new Socket("127.0.0.1", 9669);
 		saida = new PrintStream(cliente.getOutputStream());
 		teclado = new Scanner(System.in);
 		server = new Scanner(cliente.getInputStream());

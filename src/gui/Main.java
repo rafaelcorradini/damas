@@ -18,8 +18,8 @@ import java.net.UnknownHostException;
 
 /**
  * Primeira interface onde o usuario se conecta ao servidor. Chama o objeto {@Board}
- * @author Guilherme
- *
+ * @author Rafael Corradini da Cunha (9424322)
+ * @author Guilherme Alves Campos (8522320)
  */
 public class Main extends JFrame implements ActionListener {
 	
@@ -62,7 +62,7 @@ public class Main extends JFrame implements ActionListener {
 		contentPane.add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		//Botão
+		//Botï¿½o
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setActionCommand("entrar");
 		btnEntrar.addActionListener(this);
@@ -95,13 +95,13 @@ public class Main extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Loda com as ações a serem tomadas caso o botão seja precionado 
-	 * @param e Ação
+	 * Loda com as aï¿½ï¿½es a serem tomadas caso o botï¿½o seja precionado 
+	 * @param e Aï¿½ï¿½o
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		//Inicia jogo se o botão foi clicado e algo foi digitado como nome
+		//Inicia jogo se o botï¿½o foi clicado e algo foi digitado como nome
 		if (ENTRAR.equals(e.getActionCommand())) {
 			
 			if (!textField.getText().equals("")) {
