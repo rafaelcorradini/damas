@@ -39,9 +39,8 @@ public class ServerThread extends Thread {
 		Jogador j1 = null;
 		Jogador j2 = null;
 		int ret;
-		Jogador jtemp = null;
-		
-		Damas damas = new Damas();
+		Jogador jTemp = null;
+		Damas damas = null;
 		
 		try {
 			j1Out = new PrintStream(jogador1.getOutputStream());
@@ -74,26 +73,21 @@ public class ServerThread extends Thread {
 			j1Out.println(j2.getNome());
 			j2Out.println(j1.getNome());
 			
-			
+			damas = new Damas(8, j1, j2);
 			
 			while(true) {
-				System.out.println("vez: "+damas.getVez());
-				
-				
 				if (damas.getVez() == 1) {
 					line = j1In.nextLine();
-					jtemp = j1;	
+					jTemp = j1;	
 				} else {
 					line = j2In.nextLine();
-					jtemp = j2;
+					jTemp = j2;
 				}
 				System.out.println(line);
 				if(getComando(line).equals("M")) { 
-					ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), jtemp);
-					//j1Out.println("M "+ret);
+					ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), jTemp);
 				} else if(getComando(line).equals("C")) { 
 					if (damas.confirmarJogada()) {
-						//j1Out.println("C "+1);
 						if (damas.getVez() == 2) {
 							j2Out.println(damas.getTabuleiroS());
 						} else {
@@ -102,13 +96,11 @@ public class ServerThread extends Thread {
 						
 					}
 				} else if(getComando(line).equals("R")) { 
-					damas.refazerJogada();
-					//j1Out.println("R");
-				
+					damas.refazerJogada();				
 				} else if (getComando(line).equals("E")) {
-					if (jtemp == j1) {
+					if (jTemp == j1) {
 						e1 = true;
-					} else if (jtemp == j2) {
+					} else if (jTemp == j2) {
 						e2 = true;
 					}
 					
@@ -116,76 +108,23 @@ public class ServerThread extends Thread {
 						j1Out.println("E");
 						j2Out.println("E");
 					}
-				}
-				
-				else {
+				} else {
 					System.out.println(damas.getVitoria());
 					if (damas.getVitoria() == 1) {
 						j1Out.println("V1");
 						j2Out.println("V1");
-						System.out.println("Jogador1 vencedor" + j2.getPecas());
+						System.out.println("Jogador1 vencedor" + j1.getPecas());
 						break;
 					}
 				
 					if (damas.getVitoria() == 2) {
 						j1Out.println("V2");
 						j2Out.println("V2");
-						System.out.println("Jogador2 vencedor " + j1.getPecas());
+						System.out.println("Jogador2 vencedor " + j2.getPecas());
 						break;
 					}
 				}
-				
-				
-//				if (damas.getVez() == 1) {
-//					System.out.println("entrou no 1");
-//					line = j1In.nextLine();
-//					System.out.println(line);
-//					if(getComando(line).equals("M")) { 
-//						ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), j1);
-//						//j1Out.println("M "+ret);
-//					} else if(getComando(line).equals("C")) { 
-//						if (damas.confirmarJogada()) {
-//							//j1Out.println("C "+1);
-//							j2Out.println(damas.getTabuleiroS());
-//						}
-//					} else if(getComando(line).equals("R")) { 
-//						damas.refazerJogada();
-//						//j1Out.println("R");
-//					}
-//					
-//				} else {
-//					line = j2In.nextLine();
-//					System.out.println(line);
-//					System.out.println("entrou no 2");
-//					if(getComando(line).equals("M"))  {
-//						ret = damas.fazerMovimento(getComandoInt(line, 1), getComandoInt(line, 2), getComandoInt(line, 3), getComandoInt(line, 4), j2);
-//						//j2Out.println("M "+ret);
-//					} else if(getComando(line).equals("C")) { 
-//						if (damas.confirmarJogada()) {
-//							//j2Out.println("C "+1);
-//							j1Out.println(damas.getTabuleiroS());
-//						}
-//					} else if(getComando(line).equals("R")) { 
-//						damas.refazerJogada();
-//						//j2Out.println("R");
-//					}
-//				}
-				
-				/*
-				if (j2.getPecas() <= 0) {
-					j1Out.println("F 1");
-					j2Out.println("F 0");
-					System.out.println("Jogador1 vencedor");
-					break;
-				}
-				
-				if (j1.getPecas() <= 0) {
-					j1Out.println("F 0");
-					j2Out.println("F 1");
-					System.out.println("Jogador2 vencedor");
-					break;
-				}	
-				*/				
+							
 			}	
 		} catch(Exception e) {
 			System.out.println(e);

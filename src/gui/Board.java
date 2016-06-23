@@ -427,4 +427,3 @@ public class Board extends JFrame implements ActionListener {
 	}
 	
 }
-
