@@ -118,20 +118,22 @@ public class ServerThread extends Thread {
 					}
 				}
 				
-				System.out.println(damas.getVitoria());
-				if (damas.getVitoria() == 1) {
-					j1Out.println("V1");
-					j2Out.println("V1");
-					System.out.println("Jogador1 vencedor" + j2.getPecas());
-					break;
-				}
+				else {
+					System.out.println(damas.getVitoria());
+					if (damas.getVitoria() == 1) {
+						j1Out.println("V1");
+						j2Out.println("V1");
+						System.out.println("Jogador1 vencedor" + j2.getPecas());
+						break;
+					}
 				
-				if (damas.getVitoria() == 2) {
-					j1Out.println("V2");
-					j2Out.println("V2");
-					System.out.println("Jogador2 vencedor " + j1.getPecas());
-					break;
-				}	
+					if (damas.getVitoria() == 2) {
+						j1Out.println("V2");
+						j2Out.println("V2");
+						System.out.println("Jogador2 vencedor " + j1.getPecas());
+						break;
+					}
+				}
 				
 				
 //				if (damas.getVez() == 1) {
