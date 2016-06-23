@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
@@ -54,7 +55,7 @@ public class Board extends JFrame implements ActionListener {
 	 * @throws Exception
 	 */
 	public Board(String nome) throws Exception{
-		cliente = new Socket("192.168.0.15", 9669);
+		cliente = new Socket(InetAddress.getLocalHost(), 9669);
 		saida = new PrintStream(cliente.getOutputStream());
 		server = new Scanner(cliente.getInputStream());
 		
