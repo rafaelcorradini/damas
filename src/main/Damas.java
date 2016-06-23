@@ -595,6 +595,9 @@ public class Damas {
 	}
 	
 	public int getVitoria() {
+		System.out.println(jogador1.getPecas());
+		System.out.println(jogador2.getPecas());
+		
 		if (jogador1.getPecas() <= 0) return 1;
 		else if (jogador2.getPecas() <= 0) return 2;
 		else return 0;
