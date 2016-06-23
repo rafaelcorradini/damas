@@ -303,6 +303,23 @@ public class Board extends JFrame implements ActionListener {
 	}
 	
 	static public void esperaVez() {
+		
+		if (jogo.getVitoria() == 1) {
+			if (j1.getCor() == 1) {
+				labelTop.setText("Voc� venceu!");
+			}
+			else labelTop.setText("Voc� perdeu");
+			
+			unablePecas(10);
+		} else if (jogo.getVitoria() == 2) {
+			if (j1.getCor() == 2) {
+				labelTop.setText("Voc� venceu!");
+			}
+			else labelTop.setText("Voc� perdeu");
+			
+			unablePecas(10);
+		}
+		
 		String line = server.nextLine();
 		System.out.println("board: "+line);
 		
@@ -337,6 +354,22 @@ public class Board extends JFrame implements ActionListener {
 			atualizaTabuleiroAux(jogo.getTabuleiro());
 			labelTop.setText("Sua vez");
 			unablePecas (jogo.getVez());
+		}
+
+		if (jogo.getVitoria() == 1) {
+			if (j1.getCor() == 1) {
+				labelTop.setText("Voce venceu!");
+			}
+			else labelTop.setText("Voce perdeu");
+			
+			unablePecas(10);
+		} else if (jogo.getVitoria() == 2) {
+			if (j1.getCor() == 2) {
+				labelTop.setText("Voce venceu!");
+			}
+			else labelTop.setText("Voce perdeu");
+			
+			unablePecas(10);
 		}
 		
 		gambiarra = false;
