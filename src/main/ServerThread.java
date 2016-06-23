@@ -12,6 +12,8 @@ import java.util.Scanner;
 public class ServerThread extends Thread {
 	private Socket jogador1;
 	private Socket jogador2;
+	boolean e1 = false;
+	boolean e2 = false;
 	
 	/**
 	 * Construtor da classe
@@ -69,8 +71,8 @@ public class ServerThread extends Thread {
 			System.out.println("Jogador1: "+ j1.getNome() + " Cor: "+ j1.getCor());
 			System.out.println("Jogador2: "+ j2.getNome() + " Cor: "+ j2.getCor());
 			
-			j1Out.println("outro jogador: "+j2.getNome());
-			j2Out.println("outro jogador: "+j1.getNome());
+			j1Out.println(j2.getNome());
+			j2Out.println(j1.getNome());
 			
 			
 			
@@ -102,7 +104,34 @@ public class ServerThread extends Thread {
 				} else if(getComando(line).equals("R")) { 
 					damas.refazerJogada();
 					//j1Out.println("R");
+				
+				} else if (getComando(line).equals("E")) {
+					if (jtemp == j1) {
+						e1 = true;
+					} else if (jtemp == j2) {
+						e2 = true;
+					}
+					
+					if (e1 && e2) {
+						j1Out.println("E");
+						j2Out.println("E");
+					}
 				}
+				
+				/*
+				if (j2.getPecas() >= 0) {
+					j1Out.println("V1");
+					j2Out.println("V1");
+					System.out.println("Jogador1 vencedor" + j2.getPecas());
+					break;
+				}
+				
+				if (j1.getPecas() >= 0) {
+					j1Out.println("V2");
+					j2Out.println("V2");
+					System.out.println("Jogador2 vencedor " + j1.getPecas());
+					break;
+				}*/	
 				
 				
 //				if (damas.getVez() == 1) {
