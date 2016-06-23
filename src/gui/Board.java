@@ -211,16 +211,16 @@ public class Board extends JFrame implements ActionListener {
 	    					System.out.println("Melhor: " + melhor + "  Pontos: " + pontos);
 	    					
 	    					if (melhor == pontos && turno) {
-	    						System.out.println("mandouuu");
 	    						saida.println("C");
 	    						jogo.confirmarJogada();
 	    						atualizaTabuleiro();
 	    						System.out.println(jogo);
-	    						melhor = jogo.melhorJogada(jogo.getJogador());
+	    						
 	    						
 	    						pontos = 0;
 	    						turno = false;
 	    						esperaVez();
+	    						melhor = jogo.melhorJogada(jogo.getJogador());
 	    						
 	    					}  else if(turno) {
 	    						atualizaTabuleiroAux();
@@ -300,12 +300,7 @@ public class Board extends JFrame implements ActionListener {
 		atualizaTabuleiroAux();
 		labelTop.setText("Sua vez");
 		unablePecas (jogo.getVez());
-		try {
-			jogo.melhorJogada(jogo.getJogador());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		gambiarra = false;
 	}
