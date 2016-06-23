@@ -144,7 +144,6 @@ public class Damas {
 	 * @return Objeto Jogador.
 	 */
 	public Jogador getJogador() {
-		System.out.println("VEZ: " + getVez() + "JOGADOR VEZ : " + jogador1.getNome());
 		return getVez()== 1 ? jogador1 : jogador2;
 	}
 	
