@@ -68,8 +68,8 @@ public class Damas {
 		this.jogador1.setCor(1);
 		this.jogador2 = jogador2;
 		this.jogador2.setCor(2);
-		jogador1.setPecas((tamanho-2) * tamanho / 4);
-		jogador2.setPecas((tamanho-2) * tamanho / 4);
+		this.jogador1.setPecas((tamanho-2) * tamanho / 4);
+		this.jogador2.setPecas((tamanho-2) * tamanho / 4);
 		this.vez = 1;
 	}
 	
@@ -144,8 +144,23 @@ public class Damas {
 	 * @return Objeto Jogador.
 	 */
 	public Jogador getJogador() {
-		System.out.println("VEZ: " + getVez() + "JOGADOR VEZ : " + jogador1.getNome());
-		return getVez()== 1 ? jogador1 : jogador2;
+		return getVez() == 1 ? jogador1 : jogador2;
+	}
+	
+	/**
+	 * Retorna o jogador1.
+	 * @return Objeto Jogador.
+	 */
+	public int getPecas1() {
+		return jogador1.getPecas();
+	}
+	
+	/**
+	 * Retorna o jogador2.
+	 * @return Objeto Jogador.
+	 */
+	public Jogador getJogador2() {
+		return jogador2;
 	}
 	
 	public int getPontosRodada() {
@@ -402,7 +417,6 @@ public class Damas {
 		tabuleiroTemp = cloneTabuleiro(tabuleiroT);
 		pontosRodada = pontos;
 		
-		System.out.println(melhorJogada);
 		return melhorJogada;
 
 	}
@@ -594,10 +608,7 @@ public class Damas {
 		return Integer.parseInt(line.split(" ")[pos]);
 	}
 	
-	public int getVitoria() {
-		System.out.println(jogador1.getPecas());
-		System.out.println(jogador2.getPecas());
-		
+	public int getVitoria() {		
 		if (jogador1.getPecas() <= 0) return 1;
 		else if (jogador2.getPecas() <= 0) return 2;
 		else return 0;
