@@ -593,4 +593,10 @@ public class Damas {
 	private int getTileInt(String line, int pos) {
 		return Integer.parseInt(line.split(" ")[pos]);
 	}
+	
+	public int getVitoria() {
+		if (jogador1.getPecas() <= 0) return 1;
+		else if (jogador2.getPecas() <= 0) return 2;
+		else return 0;
+	}
 }
