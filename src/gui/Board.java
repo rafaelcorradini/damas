@@ -72,7 +72,7 @@ public class Board extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Board(String nome) throws Exception{
-		cliente = new Socket("127.0.0.1", 9669);
+		cliente = new Socket("192.168.0.15", 9669);
 		saida = new PrintStream(cliente.getOutputStream());
 		teclado = new Scanner(System.in);
 		server = new Scanner(cliente.getInputStream());
@@ -303,27 +303,50 @@ public class Board extends JFrame implements ActionListener {
 	}
 	
 	static public void esperaVez() {
+		
+		if (jogo.getVitoria() == 1) {
+			if (j1.getCor() == 1) {
+				labelTop.setText("Voc� venceu!");
+			}
+			else labelTop.setText("Voc� perdeu");
+			
+			unablePecas(10);
+		} else if (jogo.getVitoria() == 2) {
+			if (j1.getCor() == 2) {
+				labelTop.setText("Voc� venceu!");
+			}
+			else labelTop.setText("Voc� perdeu");
+			
+			unablePecas(10);
+		}
+		
 		String line = server.nextLine();
 		System.out.println("board: "+line);
 		
 		if (line.equals("E")) {
 			labelTop.setText("Os jogadores concordaram com um empate");
 			unablePecas(10);
-		} else if (line.equals("V1")) {
-			if (j1.getCor() == 1)
+		}
+		
+		else if (line.equals("V1")) {
+			if (j1.getCor() == 1) {
 				labelTop.setText("Voc� venceu!");
-			else 
-				labelTop.setText("Voc� perdeu");
+			}
+			else labelTop.setText("Voc� perdeu");
 			
 			unablePecas(10);
-		} else if (line.equals("V2")) {
-			if (j1.getCor() == 2)
+		}
+		
+		else if (line.equals("V2")) {
+			if (j1.getCor() == 2) {
 				labelTop.setText("Voc� venceu!");
-			else 
-				labelTop.setText("Voc� perdeu");
+			}
+			else labelTop.setText("Voc� perdeu");
 			
 			unablePecas(10);
-		} else {
+		}
+		
+		else {
 			jogo.setBoard(line);
 			jogo.changeVez();
 			System.out.println("---"+jogo.getVez());
@@ -331,6 +354,22 @@ public class Board extends JFrame implements ActionListener {
 			atualizaTabuleiroAux(jogo.getTabuleiro());
 			labelTop.setText("Sua vez");
 			unablePecas (jogo.getVez());
+		}
+
+		if (jogo.getVitoria() == 1) {
+			if (j1.getCor() == 1) {
+				labelTop.setText("Voce venceu!");
+			}
+			else labelTop.setText("Voce perdeu");
+			
+			unablePecas(10);
+		} else if (jogo.getVitoria() == 2) {
+			if (j1.getCor() == 2) {
+				labelTop.setText("Voce venceu!");
+			}
+			else labelTop.setText("Voce perdeu");
+			
+			unablePecas(10);
 		}
 		
 		gambiarra = false;
@@ -374,4 +413,3 @@ public class Board extends JFrame implements ActionListener {
 	}
 	
 }
-

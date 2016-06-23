@@ -144,23 +144,8 @@ public class Damas {
 	 * @return Objeto Jogador.
 	 */
 	public Jogador getJogador() {
-		return getVez() == 1 ? jogador1 : jogador2;
-	}
-	
-	/**
-	 * Retorna o jogador1.
-	 * @return Objeto Jogador.
-	 */
-	public int getPecas1() {
-		return jogador1.getPecas();
-	}
-	
-	/**
-	 * Retorna o jogador2.
-	 * @return Objeto Jogador.
-	 */
-	public Jogador getJogador2() {
-		return jogador2;
+		System.out.println("VEZ: " + getVez() + "JOGADOR VEZ : " + jogador1.getNome());
+		return getVez()== 1 ? jogador1 : jogador2;
 	}
 	
 	public int getPontosRodada() {
@@ -417,6 +402,7 @@ public class Damas {
 		tabuleiroTemp = cloneTabuleiro(tabuleiroT);
 		pontosRodada = pontos;
 		
+		System.out.println(melhorJogada);
 		return melhorJogada;
 
 	}
@@ -608,9 +594,21 @@ public class Damas {
 		return Integer.parseInt(line.split(" ")[pos]);
 	}
 	
-	public int getVitoria() {		
-		if (jogador1.getPecas() <= 0) return 1;
-		else if (jogador2.getPecas() <= 0) return 2;
+	public int getVitoria() {
+		int i, j;
+		int j1 = 0;
+		int j2 = 0;
+		
+		for (i = 0; i < tamanho; i++) {
+			for (j = 0; j < tamanho; j++) {
+				if (tabuleiro[i][j] == 1 || tabuleiro[i][j] == 3) j1++;
+				else if (tabuleiro[i][j] == 2 || tabuleiro[i][j] == 4) j2++;
+			}
+		}
+		
+		if (j1 == 0) return 2;
+		else if (j2 == 0) return 1;
 		else return 0;
+
 	}
 }
