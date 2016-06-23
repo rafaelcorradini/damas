@@ -3,33 +3,34 @@ package gui;
 import main.*;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
-import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
-import java.net.ServerSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 
-
+/**
+ * INterface que representa um tabuleiro de Damas. Se conecta com o servidor
+ * @author Guilherme Alves Campos
+ *
+ */
 public class Board extends JFrame implements ActionListener {
 
+	//Actions
 	static private final String SELECTED = new String ("selected");
 	static private final String EMPATE = new String ("empate");
 	
+	//Variaveis para controle do jogo
 	static Damas jogo;
 	static Jogador j1;
 	static Jogador j2;
@@ -37,44 +38,25 @@ public class Board extends JFrame implements ActionListener {
 	private int pontos = 0;
 	private int melhor = 0;
 	
+	//Variaveis para controle da interface
 	private JPanel contentPane;
 	private static JLabel labelTop;
 	private static JButton botaoEmpate;
 	private static Celula[][] tabuleiro = new Celula[8][8];
 	
+	//Variaveis para conexao cliente-servidor
 	private Socket cliente;
 	private PrintStream saida;
-	private Scanner teclado;
 	private static Scanner server;	
 	
-	static boolean gambiarra = true;
-	/*
-	public static void main(String[] args) {
-		
-		j1 = new Jogador ("Carlos", 1);
-		j2 = new Jogador ("Pedro", 2);
-		jogo = new Damas(8, j1, j2);
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Board frame = new Board(jogo.getTabuleiro());
-					atualizaTabuleiro(jogo.getTabuleiro(), j1);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	*/
 	/**
-	 * Create the frame.
+	 * Cria o tabuleiro
+	 * @param nome Nome do jogador conectado a esse client
+	 * @throws Exception
 	 */
 	public Board(String nome) throws Exception{
-		cliente = new Socket("127.0.0.1", 9669);
+		cliente = new Socket(InetAddress.getLocalHost(), 9669);
 		saida = new PrintStream(cliente.getOutputStream());
-		teclado = new Scanner(System.in);
 		server = new Scanner(cliente.getInputStream());
 		
 		server.nextLine();
@@ -84,6 +66,7 @@ public class Board extends JFrame implements ActionListener {
 
 		String nome2 = new String (server.nextLine());
 		
+		//Cria o proprio jogo espelhado no do servidor
 		if (jogador.equals("J 1")) {
 			j1 = new Jogador(nome, 1);
 			j2 = new Jogador(nome2, 2);
@@ -95,6 +78,7 @@ public class Board extends JFrame implements ActionListener {
 			jogo = new Damas(8, j2, j1);
 		}
 		
+		//Monta interface
 		setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Tabuleiro.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 427, 495);
@@ -116,6 +100,7 @@ public class Board extends JFrame implements ActionListener {
 		botaoEmpate.addActionListener(this);
 		contentPane.add(botaoEmpate, BorderLayout.SOUTH);
 		
+		//Coloca as celulas nas posi��es corretas
 		int i, j;
 		for (i = 0; i < 8; i++) {
 			for (j = 0; j < 8; j++) {
@@ -132,15 +117,20 @@ public class Board extends JFrame implements ActionListener {
 		label.setBounds(0, 0, 400, 400);
 		panel.add(label);
 		
-		this.initTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
+		//Inicia o tabuleiro e o torna visivel
+		Board.initTabuleiro(jogo.getTabuleiro(), jogo.getJogador());
 		this.setVisible(true);
 	
-	
+		//Espera, se for o caso, pela sua vez
 		if (j1.getCor() == 2) {
 			esperaVez();
 		}
 	}
 	
+	/**
+	 * Recebe a��es e atualiza a interface
+	 * @param e A��o
+	 */
 	private void animate(final ActionEvent e) {
 	    Thread thread = new Thread(new Runnable() {
 	        public void run() {
@@ -151,7 +141,8 @@ public class Board extends JFrame implements ActionListener {
 	    		boolean selectedPeca = false;
 	    		boolean selectedSlot = false;
 	    		
-	    		
+	    		//Controla a sele��o dos bot�es para que apenas uma pe�a e um espa�o em branco po�am ser selecionados. 
+	    		//� poss�vel trocar a pe�a
 	    		if (SELECTED.equals(e.getActionCommand())) {
 	    			
 	    			for (i = 0; i < 8; i++) {
@@ -171,7 +162,7 @@ public class Board extends JFrame implements ActionListener {
 	    					}
 	    				}
 	    			}
-	    			
+	    			//Seleciona espa�o em branco
 	    			for (i = 0; i < 8; i++) {
 	    				for (j = 0; j < 8; j++) {
 	    					if (tabuleiro[i][j].isSelected() && tabuleiro[i][j].myGetPeca() == 0 && selectedPeca) {
@@ -190,6 +181,7 @@ public class Board extends JFrame implements ActionListener {
 	    				}
 	    			}
 	    			
+	    			//Quando esta preparado, manda o comando de movimento para o servidor e para o jogo
 	    			if (selectedPeca && selectedSlot) {
 	    				
 	    				try {
@@ -201,6 +193,7 @@ public class Board extends JFrame implements ActionListener {
 	    					
 	    					System.out.println("check:"+check);
 	    					
+	    					//Processa o retorno
 	    					switch (check) {
 	    									
 	    						case (-1):  turno = false;
@@ -218,6 +211,7 @@ public class Board extends JFrame implements ActionListener {
 	    					}
 	    					System.out.println("Melhor: " + melhor + "  Pontos: " + pontos);
 	    					
+	    					//Decide se o turno acabou ou deve continuar
 	    					if (melhor == pontos && turno) {
 	    						saida.println("C");
 	    						jogo.confirmarJogada();
@@ -246,7 +240,7 @@ public class Board extends JFrame implements ActionListener {
 	    					
 	    				} catch (Exception e1) {e1.printStackTrace();}
 	    				
-	    				
+	    				//Reinicia variaveis
 	    				tabuleiro[endX][endY].setSelected(false);
 	    				tabuleiro[iniX][iniY].setSelected(false);
 	    				selectedPeca = false;
@@ -254,6 +248,7 @@ public class Board extends JFrame implements ActionListener {
 	    			}
 	    		}	
 	    		
+	    		//Envia o comando de empate para o servidor quando acontecer
 	    		else if (EMPATE.equals(e.getActionCommand())) {
 	    			saida.println("E");
 	    		}
@@ -264,19 +259,19 @@ public class Board extends JFrame implements ActionListener {
 	    thread.start();
 	}
 	
-	/*
-	public static void goTo() {
-
-		if (jogo.getVez() != j1.getCor()) {
-			esperaVez();
-		}
-	}*/
-
+	/**
+	 * Chama o metodo @animate
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		animate(e);
 	}
 	
+	/**
+	 * Inicia o tabuleiro: JLabel com o tezto correto e bot�es corretos enablados ou n�o
+	 * @param tabu tabuleiro base
+	 * @param jogador conectado neste client
+	 */
 	static public void initTabuleiro(int tabu[][], Jogador jogador) {
 		int i, j;
 		for (i = 0; i < 8; i++) {
@@ -291,19 +286,23 @@ public class Board extends JFrame implements ActionListener {
 		
 	}
 
+	/**
+	 * Atualiza tabuleiro com base no jogo. JLabel correto. Celulas corretas enabladas ou n�o.
+	 */
 	static public void atualizaTabuleiro() {
-		int tabu[][] = jogo.getTabuleiro();
 		Jogador jogador = jogo.getJogador();
 		
 		atualizaTabuleiroAux(jogo.getTabuleiro());
 		labelTop.setText(jogo.getJogador().getNome() + " esta jogando...");
 		unablePecas (jogador.getCor());
-		
-		gambiarra = true;
 	}
 	
+	/**
+	 * Aguarda uma resposta do servidor de que o advers�rio j� executou sua jogada. Recebe a nova configura��o do tabuleiro. Atualiza a interface. Checa se houve vitora de algum dos jogadores. Checa se houve empate.
+	 */
 	static public void esperaVez() {
 		
+		//Checa se houve vitoria
 		if (jogo.getVitoria() == 1) {
 			if (j1.getCor() == 1) {
 				labelTop.setText("Voc� venceu!");
@@ -320,14 +319,17 @@ public class Board extends JFrame implements ActionListener {
 			unablePecas(10);
 		}
 		
+		//aguarda mensagem do servidor
 		String line = server.nextLine();
 		System.out.println("board: "+line);
 		
+		//Checa se foi empate
 		if (line.equals("E")) {
 			labelTop.setText("Os jogadores concordaram com um empate");
 			unablePecas(10);
 		}
 		
+		//Checa por vitoria do jogador 1
 		else if (line.equals("V1")) {
 			if (j1.getCor() == 1) {
 				labelTop.setText("Voc� venceu!");
@@ -337,6 +339,7 @@ public class Board extends JFrame implements ActionListener {
 			unablePecas(10);
 		}
 		
+		//Checa por vitoria do jogador 2
 		else if (line.equals("V2")) {
 			if (j1.getCor() == 2) {
 				labelTop.setText("Voc� venceu!");
@@ -346,6 +349,7 @@ public class Board extends JFrame implements ActionListener {
 			unablePecas(10);
 		}
 		
+		//Se n�o atualiza a interface com a nova configura��o do tabuleiro
 		else {
 			jogo.setBoard(line);
 			jogo.changeVez();
@@ -356,6 +360,7 @@ public class Board extends JFrame implements ActionListener {
 			unablePecas (jogo.getVez());
 		}
 
+		//Checa por vitoria mais uma vez
 		if (jogo.getVitoria() == 1) {
 			if (j1.getCor() == 1) {
 				labelTop.setText("Voce venceu!");
@@ -372,9 +377,12 @@ public class Board extends JFrame implements ActionListener {
 			unablePecas(10);
 		}
 		
-		gambiarra = false;
 	}
 	
+	/**
+	 * Atualiza apenas as celulas do tabuleiro de acordo com tabu
+	 * @param tabu tabuleiro base para a atualiza��o do tabuleiro da interface
+	 */
 	static private void atualizaTabuleiroAux(int tabu[][]) {
 		//int tabu[][] = jogo.getTabuleiro();
 		
@@ -387,9 +395,14 @@ public class Board extends JFrame implements ActionListener {
 		
 	}
 	
+	/**
+	 * ativa (anabla) ou desativa (desenabla?) as celulas de acordo com a cor
+	 * @param cor
+	 */
 	public static void unablePecas(int cor) {
 		int i, j;
 		
+		//Se for sua vez ativa celulas brancas e da sua cor e bot�o de empate
 		if (j1.getCor() == cor) {
 			for (i = 0; i < 8; i++) {
 				for (j = 0; j < 8; j++) {
@@ -401,6 +414,7 @@ public class Board extends JFrame implements ActionListener {
 			botaoEmpate.setEnabled(true);
 		}
 		
+		//Se n�o desativa tudo
 		else {
 			
 			for (i = 0; i < 8; i++) {
