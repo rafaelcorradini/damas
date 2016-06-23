@@ -1,4 +1,10 @@
 package main;
+
+/**
+ * Classe principal do jogo de damas, que contém toda a lógica do jogo.
+ * @author Rafael Corradini da Cunha (9424322)
+ * @author Guilherme Alves Campos (8522320)​
+ */
 public class Damas {
 	private int[][] tabuleiro; // -1 - não é casa, 0 - vazio, 1 - peça preta, 2 - peça branca, 3 - dama preta e 4 - dama branca
 	private int[][] tabuleiroTemp;
@@ -576,6 +582,13 @@ public class Damas {
 		tabuleiroTemp = cloneTabuleiro(tabuleiro);
 		pontosRodada = 0;
 	}
+	
+	/**
+	 * M�todo que recebe uma String e utiliza o método .split(" ") na mesma, então retorna o elemento da posição pos do vetor retornado pelo método split 
+	 * @param board String da linha que será dada o split
+	 * @param pos Posição a ser retornada do split
+	 * @return Inteiro, elemento da posição pos do vetor retornado pelo método split
+	 */
 	
 	private int getTileInt(String line, int pos) {
 		return Integer.parseInt(line.split(" ")[pos]);
