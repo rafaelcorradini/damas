@@ -13,6 +13,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
@@ -27,6 +28,7 @@ import java.awt.event.ActionEvent;
 public class Board extends JFrame implements ActionListener {
 
 	static private final String SELECTED = new String ("selected");
+	static private final String EMPATE = new String ("empate");
 	
 	static Damas jogo;
 	static Jogador j1;
@@ -37,6 +39,7 @@ public class Board extends JFrame implements ActionListener {
 	
 	private JPanel contentPane;
 	private static JLabel labelTop;
+	private static JButton botaoEmpate;
 	private static Celula[][] tabuleiro = new Celula[8][8];
 	
 	private Socket cliente;
@@ -69,7 +72,7 @@ public class Board extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Board(String nome) throws Exception{
-		cliente = new Socket("127.0.0.1", 9669);
+		cliente = new Socket("192.168.0.15", 9669);
 		saida = new PrintStream(cliente.getOutputStream());
 		teclado = new Scanner(System.in);
 		server = new Scanner(cliente.getInputStream());
@@ -94,7 +97,7 @@ public class Board extends JFrame implements ActionListener {
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Tabuleiro.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 427, 463);
+		setBounds(100, 100, 427, 495);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -107,6 +110,11 @@ public class Board extends JFrame implements ActionListener {
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
+		
+		botaoEmpate = new JButton("Pedir Empate");
+		botaoEmpate.setActionCommand("empate");
+		botaoEmpate.addActionListener(this);
+		contentPane.add(botaoEmpate, BorderLayout.SOUTH);
 		
 		int i, j;
 		for (i = 0; i < 8; i++) {
@@ -133,7 +141,7 @@ public class Board extends JFrame implements ActionListener {
 		}
 	}
 	
-	private void animate(ActionEvent e) {
+	private void animate(final ActionEvent e) {
 	    Thread thread = new Thread(new Runnable() {
 	        public void run() {
 	        	int check = 0;
@@ -246,6 +254,10 @@ public class Board extends JFrame implements ActionListener {
 	    			}
 	    		}	
 	    		
+	    		else if (EMPATE.equals(e.getActionCommand())) {
+	    			saida.println("E");
+	    		}
+	    		
 	        }
 	    });
 	    thread.setPriority(Thread.NORM_PRIORITY);
@@ -293,14 +305,39 @@ public class Board extends JFrame implements ActionListener {
 	static public void esperaVez() {
 		String line = server.nextLine();
 		System.out.println("board: "+line);
-		jogo.setBoard(line);
-		jogo.changeVez();
-		System.out.println("---"+jogo.getVez());
 		
-		atualizaTabuleiroAux();
-		labelTop.setText("Sua vez");
-		unablePecas (jogo.getVez());
+		if (line.equals("E")) {
+			labelTop.setText("Os jogadores concordaram com um empate");
+			unablePecas(10);
+		}
 		
+		else if (line.equals("V1")) {
+			if (j1.getCor() == 1) {
+				labelTop.setText("Você venceu!");
+			}
+			else labelTop.setText("Você perdeu");
+			
+			unablePecas(10);
+		}
+		
+		else if (line.equals("V2")) {
+			if (j1.getCor() == 2) {
+				labelTop.setText("Você venceu!");
+			}
+			else labelTop.setText("Você perdeu");
+			
+			unablePecas(10);
+		}
+		
+		else {
+			jogo.setBoard(line);
+			jogo.changeVez();
+			System.out.println("---"+jogo.getVez());
+		
+			atualizaTabuleiroAux();
+			labelTop.setText("Sua vez");
+			unablePecas (jogo.getVez());
+		}
 		
 		gambiarra = false;
 	}
@@ -328,6 +365,7 @@ public class Board extends JFrame implements ActionListener {
 					} else tabuleiro[i][j].setEnabled(true);
 				}
 			}
+			botaoEmpate.setEnabled(true);
 		}
 		
 		else {
@@ -336,8 +374,8 @@ public class Board extends JFrame implements ActionListener {
 				for (j = 0; j < 8; j++) {
 					tabuleiro[i][j].setEnabled(false);
 				}
-				
 			}
+			botaoEmpate.setEnabled(false);
 		}
 	}
 	
