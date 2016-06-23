@@ -6,31 +6,22 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import main.Damas;
-import main.Jogador;
-
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import javax.swing.JScrollBar;
-import javax.swing.JPasswordField;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
+/**
+ * Primeira interface onde o usuario se conecta ao servidor. Chama o objeto {@Board}
+ * @author Guilherme
+ *
+ */
 public class Main extends JFrame implements ActionListener {
-
-	private Damas jogo;
-	private Jogador j1;
-	private Jogador j2;
 	
 	static Main frame;
 	JLabel lblEntreComUm;
@@ -39,7 +30,7 @@ public class Main extends JFrame implements ActionListener {
 	private String ENTRAR = new String ("entrar");
 	
 	/**
-	 * Launch the application.
+	 * Inicia a interface
 	 */
 	public static void main(String[] args) throws Exception{
 		EventQueue.invokeLater(new Runnable() {
@@ -55,9 +46,11 @@ public class Main extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Create the frame.
+	 * Cria a interface
 	 */
 	public Main() throws Exception{
+		
+		//Painel pricipal
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 232, 148);
 		contentPane = new JPanel();
@@ -69,19 +62,23 @@ public class Main extends JFrame implements ActionListener {
 		contentPane.add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		//Botão
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setActionCommand("entrar");
 		btnEntrar.addActionListener(this);
 		panel.add(btnEntrar);
 		
+		//Novo painel colocado no centro
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
+		//Label
 		lblEntreComUm = new JLabel("Entre com um nome de usu\u00E1rio");
 		lblEntreComUm.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblEntreComUm, BorderLayout.NORTH);
 		
+		//TextField
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3, BorderLayout.CENTER);
 		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -97,10 +94,14 @@ public class Main extends JFrame implements ActionListener {
 		panel_2.add(lblDamasjava);
 	}
 
+	/**
+	 * Loda com as ações a serem tomadas caso o botão seja precionado 
+	 * @param e Ação
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String nome = new String();
 		
+		//Inicia jogo se o botão foi clicado e algo foi digitado como nome
 		if (ENTRAR.equals(e.getActionCommand())) {
 			
 			if (!textField.getText().equals("")) {
@@ -109,10 +110,8 @@ public class Main extends JFrame implements ActionListener {
 				try {
 					iniJogo(textField.getText());
 				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				frame.setVisible(false);		
@@ -120,29 +119,20 @@ public class Main extends JFrame implements ActionListener {
 		}
 	}
 
+	/**
+	 * Inicia a classe Board, que ira se conectar ao servidor
+	 * @param nome Nome do jogador digitado pelo usuario
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	private void iniJogo (final String nome) throws UnknownHostException, IOException {
 		
-		//j1 = new Jogador (nome, 1);
-		//j2 = new Jogador ("Outro Nome", 2);
-		//Board board;
-		//jogo = new Damas(8, j1, j2);
-		
-		/*final Socket cliente = new Socket("192.168.0.15", 9669);
-		PrintStream saida = new PrintStream(cliente.getOutputStream());
-		Scanner teclado = new Scanner(System.in);
-		final Scanner server = new Scanner(cliente.getInputStream());
-		*/
-		//System.out.println(server.nextLine());
-		//final String jogador = new String(server.nextLine());
-		//System.out.println(jogador);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Board board = new Board(nome);
 					board.setVisible(true);
-					//board.atualizaTabuleiro();
-		
-				//atualizaTabuleiro(jogo.getTabuleiro(), j1);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
