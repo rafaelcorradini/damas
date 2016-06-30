@@ -593,6 +593,10 @@ public class Damas {
 		return Integer.parseInt(line.split(" ")[pos]);
 	}
 	
+	/**
+	 * Retorna 0 caso não tenha acabado, 1 caso o jogador com peças pretas tenho ganhado e 2 caso o jogador com peças brancas tenha ganhado.
+	 * @return Retorna um inteiro que indica a cor de quem ganhou
+	 */
 	public int getVitoria() {
 		int i, j;
 		int j1 = 0;
